@@ -17,7 +17,7 @@ const TodoItem = ({ todo, onDelete }: TodoItemProps) => {
               onClick={() => onDelete(todo.id)}
               className="text-white font-normal px-2 py-1 border rounded-lg bg-[#c4302b] cursor-pointer"
             >
-              {todo.isDone ? '완료' : '삭제'}
+              {todo.isDone ? '삭제' : '완료'}
             </button>
           </li>
         </button>
