@@ -19,7 +19,7 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
       <p className={`text-start`}>{todo.text}</p>
       <button
         onClick={() => (todo.isDone ? onDelete(todo.id) : onComplete(todo.id))}
-        className={`font-normal px-2 py-1 border rounded-lg cursor-pointer transition-colors ${
+        className={`font-normal px-2 py-1 border border-white text-white rounded-lg cursor-pointer transition-colors ${
           todo.isDone
             ? "bg-[#c4302b] hover:bg-[#a82723]"
             : "bg-[#17b75e] hover:bg-[#0a9649]"
