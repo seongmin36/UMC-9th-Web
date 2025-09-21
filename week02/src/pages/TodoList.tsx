@@ -1,9 +1,10 @@
-import { useCallback, useReducer, useRef } from "react";
+import { useCallback, useContext, useReducer, useRef } from "react";
 import TodoForm from "../components/TodoForm";
-import type { Todo } from "../types/Todo";
+import type { Todo } from "../types/todo";
 import TodoItem from "../components/TodoItem";
 import toast, { Toaster } from "react-hot-toast";
-import { TodoContext } from "../context/todoContext";
+import { TodoContext } from "../context/TodoContext";
+import { ThemeContext } from "../context/ThemeContext";
 
 function reducer(state: Todo[], action): Todo[] {
   switch (action.type) {
@@ -62,11 +63,31 @@ const TodoList = () => {
     toast.success("완료된 일이 삭제되었습니다!");
   }, []);
 
+  // theme context 전역 가져오기
+  const theme = useContext(ThemeContext);
+  if (!theme) return null;
+  const { isDark } = theme;
+
   return (
-    <div className="flex justify-center items-center bg-amber-50 min-h-screen">
+    <div className={``}>
       {/* react-hot-toast 라이브러리 */}
-      <Toaster position="top-center" reverseOrder={false} />
-      <div className="border w-120 text-center p-4 bg-white border-none rounded-xl shadow-md">
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        toastOptions={{
+          style: isDark
+            ? {
+                background: "#363636",
+                color: "#ffffff",
+              }
+            : {},
+        }}
+      />
+      <div
+        className={` ${
+          isDark ? "bg-dark border border-white" : "bg-white border-none"
+        } border w-120 text-center p-4 rounded-xl shadow-md`}
+      >
         {/* 하위 컴포넌트에 useContext()를 제공해주기 위한 Provider 태그 */}
         <TodoContext.Provider
           value={{ todoList, onCreate, onComplete, onDelete }}

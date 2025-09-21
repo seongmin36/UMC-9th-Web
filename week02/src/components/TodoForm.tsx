@@ -1,8 +1,10 @@
 import { useCallback, useContext, useState } from "react";
-import { TodoContext } from "../context/todoContext";
+import { TodoContext } from "../context/TodoContext";
+import { ThemeContext } from "../context/ThemeContext";
 
 const TodoForm = () => {
   const [todo, setTodo] = useState<string>("");
+  const theme = useContext(ThemeContext);
 
   // e : 강제 any타입 추론으로 인한 eslint 오류 (React.ChangeEvent<HTMLInpuElement>)
   const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -12,6 +14,8 @@ const TodoForm = () => {
   const context = useContext(TodoContext);
   if (!context) return null;
   const { onCreate } = context;
+  if (!theme) return null;
+  const { isDark } = theme;
 
   const addTodo = (e) => {
     e.preventDefault();
@@ -34,7 +38,9 @@ const TodoForm = () => {
           type="text"
           value={todo}
           placeholder="할 일 입력"
-          className="border border-gray-300 rounded-md min-w-80 px-2 py-1 "
+          className={`border border-gray-300 rounded-md min-w-80 px-2 py-1 ${
+            isDark ? "placeholder:text-gra-100" : "placeholder:text-gray-300"
+          }`}
           onChange={onChange}
         />
         <button
