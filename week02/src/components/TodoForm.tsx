@@ -1,56 +1,41 @@
-import { useCallback, useContext, useState } from "react";
-import { TodoContext } from "../context/TodoContext";
-import { ThemeContext } from "../context/ThemeContext";
+import { useCallback, useState } from 'react';
+import { useTodo } from '../hooks/useTodo';
 
 const TodoForm = () => {
-  const [todo, setTodo] = useState<string>("");
-  const theme = useContext(ThemeContext);
+  const [todo, setTodo] = useState('');
+  const { onCreate } = useTodo();
 
-  // e : 강제 any타입 추론으로 인한 eslint 오류 (React.ChangeEvent<HTMLInpuElement>)
   const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setTodo(e.target.value);
   }, []);
 
-  const context = useContext(TodoContext);
-  if (!context) return null;
-  const { onCreate } = context;
-  if (!theme) return null;
-  const { isDark } = theme;
-
-  const addTodo = (e) => {
+  const addTodo = (e: React.FormEvent) => {
     e.preventDefault();
-    if (todo.trim() !== "") {
+    if (todo.trim()) {
       onCreate(todo);
-      setTodo("");
+      setTodo('');
     }
   };
-  console.log(todo);
 
   return (
-    <>
-      <h1 className="font-bold text-2xl my-4">KRONG TODO</h1>
-
-      <form
-        className="flex justify-center items-center gap-2 mb-4 w-full"
-        onSubmit={addTodo}
+    <form
+      className="flex justify-center items-center gap-2 mb-6 w-full"
+      onSubmit={addTodo}
+    >
+      <input
+        type="text"
+        value={todo}
+        placeholder="할 일 입력"
+        className="border border-gray-300 rounded-md min-w-80 px-2 py-1 bg-white text-black dark:bg-[#363636] dark:text-white dark:border-gray-500"
+        onChange={onChange}
+      />
+      <button
+        type="submit"
+        className="text-white px-4 py-1 bg-green-600 hover:bg-green-700 transition-colors rounded-lg"
       >
-        <input
-          type="text"
-          value={todo}
-          placeholder="할 일 입력"
-          className={`border border-gray-300 rounded-md min-w-80 px-2 py-1 ${
-            isDark ? "placeholder:text-gra-100" : "placeholder:text-gray-300"
-          }`}
-          onChange={onChange}
-        />
-        <button
-          type="submit"
-          className="text-white px-2 py-1 bg-[#17b75e] hover:bg-[#0a9649] transition-colors border rounded-lg cursor-pointer"
-        >
-          할 일 추가
-        </button>
-      </form>
-    </>
+        추가
+      </button>
+    </form>
   );
 };
 
