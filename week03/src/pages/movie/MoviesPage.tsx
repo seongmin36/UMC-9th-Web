@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { Movie, MovieResponse } from '../../types/movie';
 import axios from 'axios';
+import MovieItem from '../../components/MovieItem';
 
 const MoviesPage = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -8,7 +9,7 @@ const MoviesPage = () => {
 
   useEffect(() => {
     // movieToken 환경 변수 가져오기
-    const movieToken = import.meta.env.MOVIE_API_KEY;
+    const movieToken = import.meta.env.VITE_MOVIE_API_KEY;
 
     const fetchMovies = async () => {
       const { data } = await axios.get<MovieResponse>(
@@ -23,14 +24,14 @@ const MoviesPage = () => {
     };
     fetchMovies();
   }, []);
+
   return (
     <ul>
-      {movies.map((movie) => (
-        <li key={movie.id}>
-          <h2>{movie.title}</h2>
-          <p>{movie.release_date}</p>
-        </li>
-      ))}
+      <div className="grid grid-cols-6 gap-4 m-10 mx-40">
+        {movies.map((movie, idx) => (
+          <MovieItem key={idx} movie={movie} />
+        ))}
+      </div>
     </ul>
   );
 };
