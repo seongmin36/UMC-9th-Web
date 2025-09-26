@@ -13,3 +13,8 @@ export type MovieResponse = {
   total_pages: number;
   total_results: number;
 };
+
+export interface NavItem {
+  label: string;
+  path: string;
+}

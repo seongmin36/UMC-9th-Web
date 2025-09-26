@@ -1,4 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom';
+import MovieNavbar from '../components/MovieNavbar';
 
 interface BaseLayoutProps {
   protectedRoutes: boolean;
@@ -11,6 +12,7 @@ const BaseLayout = ({ protectedRoutes }: BaseLayoutProps) => {
 
   return (
     <>
+      <MovieNavbar />
       <Outlet />
     </>
   );
