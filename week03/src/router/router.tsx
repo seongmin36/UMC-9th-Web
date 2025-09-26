@@ -1,17 +1,14 @@
-import { createBrowserRouter, type RouteObject } from 'react-router-dom';
-import BaseLayout from '../layouts/BaseLayout';
-import NotFound from '../layouts/NotFount';
-import HomePage from '../pages/HomePage';
-import MovieDetail from '../components/MovieDetail';
-import MoviesPage from '../pages/movie/MoviesPage';
-import MoviesPopular from '../pages/movie/MoviesPopular';
-import MoviesNow from '../pages/movie/MoviesNow';
-import MoviesTop from '../pages/movie/MoviesTop';
-import MoviesUpcoming from '../pages/movie/MoviesUpcoming';
+import { createBrowserRouter, type RouteObject } from "react-router-dom";
+import BaseLayout from "../layouts/BaseLayout";
+import NotFound from "../layouts/NotFount";
+import HomePage from "../pages/HomePage";
+import MovieDetail from "../components/MovieDetail";
+import Movies from "../pages/movie/Movies";
+import MoviesHome from "../pages/movie/MoviesHome";
 
 const publicLayout: RouteObject[] = [
   {
-    path: '/',
+    path: "/",
     element: <BaseLayout protectedRoutes={false} />,
     errorElement: <NotFound />,
     children: [
@@ -20,29 +17,15 @@ const publicLayout: RouteObject[] = [
         element: <HomePage />,
       },
       {
-        path: 'movies',
-        element: <MoviesPage />,
-        children: [
-          {
-            path: 'popular',
-            element: <MoviesPopular />,
-          },
-          {
-            path: 'now_playing',
-            element: <MoviesNow />,
-          },
-          {
-            path: 'top_rated',
-            element: <MoviesTop />,
-          },
-          {
-            path: 'upcoming',
-            element: <MoviesUpcoming />,
-          },
-        ],
+        path: "movies",
+        element: <MoviesHome />,
       },
       {
-        path: 'movies/:catId/:movieId',
+        path: "movies/:category",
+        element: <Movies />,
+      },
+      {
+        path: "movies/details/:movieId",
         element: <MovieDetail />,
       },
     ],

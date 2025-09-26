@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
-import type { Movie, MovieResponse } from '../../types/movie';
-import axios from 'axios';
-import MovieItem from '../../components/MovieItem';
+import { useEffect, useState } from "react";
+import type { Movie, MovieResponse } from "../../types/movie";
+import axios from "axios";
+import MovieItem from "../../components/MovieItem";
+import { useParams } from "react-router-dom";
 
-const MoviesPage = () => {
+const Movies = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
+  const { category } = useParams();
   console.log(movies);
 
   useEffect(() => {
@@ -13,7 +15,7 @@ const MoviesPage = () => {
 
     const fetchMovies = async () => {
       const { data } = await axios.get<MovieResponse>(
-        'https://api.themoviedb.org/3/movie/popular?language=ko-KR&page=1',
+        `https://api.themoviedb.org/3/movie/${category}?language=ko-KR&page=1`,
         {
           headers: {
             Authorization: `Bearer ${movieToken}`,
@@ -23,7 +25,7 @@ const MoviesPage = () => {
       setMovies(data.results);
     };
     fetchMovies();
-  }, []);
+  }, [category]);
 
   return (
     <div>
@@ -38,4 +40,4 @@ const MoviesPage = () => {
   );
 };
 
-export default MoviesPage;
+export default Movies;
