@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import type { Movie } from '../types/movie';
 
 interface MovieProps {
@@ -6,13 +7,26 @@ interface MovieProps {
 
 const MovieItem = ({ movie }: MovieProps) => {
   const tmdbBaseUrl = import.meta.env.VITE_TMDB_IMAGE_BASE_URL;
+  const navigate = useNavigate();
+
   return (
-    <button className="cursor-pointer">
-      <img
-        src={`${tmdbBaseUrl}/${movie.poster_path}`}
-        alt={`${movie.title} 포스터`}
-        className="w-full border-none rounded-xl hover:brightness-30 peer-hover:visible transition-colors hover:blur"
-      />
+    <button
+      className="cursor-pointer"
+      onClick={() => navigate(`/movies/${movie.id}`)}
+    >
+      <div className="relative w-full">
+        <img
+          src={`${tmdbBaseUrl}${movie.poster_path}`}
+          alt={`${movie.title} 포스터`}
+          className="w-full rounded-xl"
+        />
+        <div className="absolute inset-0 text-white bg-black/30 opacity-0 hover:opacity-100 backdrop-blur-sm transition duration-200 rounded-xl flex flex-col items-center justify-center">
+          <span className="text-md">{movie.title}</span>
+          <span className="w-full px-2 text-[11px] opacity-80 mt-2 overflow-hidden line-clamp-3">
+            {movie.overview}
+          </span>
+        </div>
+      </div>
     </button>
   );
 };

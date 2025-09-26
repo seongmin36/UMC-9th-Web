@@ -2,6 +2,7 @@ import { createBrowserRouter, type RouteObject } from 'react-router-dom';
 import BaseLayout from '../layouts/BaseLayout';
 import NotFound from '../layouts/NotFount';
 import HomePage from '../pages/HomePage';
+import MovieDetail from '../components/MovieDetail';
 import MoviesPage from '../pages/movie/MoviesPage';
 
 const publicLayout: RouteObject[] = [
@@ -15,8 +16,12 @@ const publicLayout: RouteObject[] = [
         element: <HomePage />,
       },
       {
-        path: 'movies/:movieId',
+        path: 'movies',
         element: <MoviesPage />,
+      },
+      {
+        path: 'movies/:movieId',
+        element: <MovieDetail />,
       },
     ],
   },

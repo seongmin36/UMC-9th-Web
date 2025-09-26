@@ -26,13 +26,15 @@ const MoviesPage = () => {
   }, []);
 
   return (
-    <ul>
-      <div className="grid grid-cols-6 gap-4 m-10 mx-40">
-        {movies.map((movie, idx) => (
-          <MovieItem key={idx} movie={movie} />
+    <div>
+      <ul className="grid grid-cols-6 gap-4 m-10 mx-40">
+        {movies.map((movie) => (
+          <li key={movie.id}>
+            <MovieItem movie={movie} />
+          </li>
         ))}
-      </div>
-    </ul>
+      </ul>
+    </div>
   );
 };
 
