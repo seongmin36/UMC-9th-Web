@@ -149,12 +149,21 @@ const MovieDetail = () => {
                 {credit?.crew
                   .filter((crew) => crew.job === "Director")
                   .map((director) => (
-                    <div className="text-center text-gray-300 w-25">
-                      <img
-                        src={`${tmdbBaseUrl}${director.profile_path}`}
-                        alt=""
-                        className="w-full border rounded-md border-white/80"
-                      />
+                    <div
+                      key={director.id}
+                      className="text-center text-gray-300 w-25"
+                    >
+                      {director.profile_path ? (
+                        <img
+                          src={`${tmdbBaseUrl}${director.profile_path}`}
+                          alt=""
+                          className="w-full border rounded-md border-white/80"
+                        />
+                      ) : (
+                        <div className="flex items-center justify-center text-xs bg-gray-400 border rounded-md w-25 h-37 border-white/80">
+                          이미지가 없습니다
+                        </div>
+                      )}
                       <p className="text-white" key={director.credit_id}>
                         {director.name}
                       </p>
@@ -163,19 +172,17 @@ const MovieDetail = () => {
                   ))}
                 {/* 출연진 */}
                 {credit?.cast.slice(0, 15).map((cast) => (
-                  <>
-                    <div className="text-center text-gray-300 w-25">
-                      <img
-                        src={`${tmdbBaseUrl}${cast.profile_path}`}
-                        alt=""
-                        className="w-full border rounded-md border-white/80"
-                      />
-                      <p className="text-white" key={cast.id}>
-                        {cast.name}
-                      </p>
-                      <p className="text-[10px]">{cast.character}</p>
-                    </div>
-                  </>
+                  <div key={cast.id} className="text-center text-gray-300 w-25">
+                    <img
+                      src={`${tmdbBaseUrl}${cast.profile_path}`}
+                      alt=""
+                      className="w-full border rounded-md border-white/80"
+                    />
+                    <p className="text-white" key={cast.id}>
+                      {cast.name}
+                    </p>
+                    <p className="text-[10px]">{cast.character}</p>
+                  </div>
                 ))}
               </div>
             </div>
