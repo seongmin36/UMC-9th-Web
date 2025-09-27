@@ -24,6 +24,13 @@ export type MovieGenre = {
   name: string;
 };
 
+export type Companies = {
+  id: number;
+  logo_path: string;
+  name: string;
+  origin_country: string;
+};
+
 export interface MovieDetail extends Movie {
   backdrop_path: string;
   genres: MovieGenre[];
@@ -32,4 +39,5 @@ export interface MovieDetail extends Movie {
   status: string;
   tagline: string;
   vote_count: number;
+  production_companies: Companies[];
 }

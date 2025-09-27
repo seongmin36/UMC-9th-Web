@@ -26,7 +26,7 @@ const Movies = () => {
         setMovies(data.results);
         setTotalPages(data.total_pages);
       } catch (e) {
-        console.log(e);
+        console.error(e);
         toast.error(`데이터를 불러오는데 실패했습니다!\n${e}`);
       } finally {
         setIsLoading(false);
