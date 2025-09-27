@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import type { Movie, MovieResponse } from "../../types/movie";
-import axios from "axios";
+import type { Movie } from "../../types/movie";
 import MovieItem from "../../components/MovieItem";
 import { useParams } from "react-router-dom";
 import MoviePagination from "../../components/MoviePagination";
 import Pending from "../../components/common/Pending";
 import toast, { Toaster } from "react-hot-toast";
+import { getMovies } from "../../apis/movies";
 
 const Movies = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -15,21 +15,14 @@ const Movies = () => {
   const [totalPages, setTotalPages] = useState<number>(0);
   console.log(movies);
 
+  const movieToken = import.meta.env.VITE_MOVIE_API_KEY;
   useEffect(() => {
     // movieToken 환경 변수 가져오기
-    const movieToken = import.meta.env.VITE_MOVIE_API_KEY;
 
     const fetchMovies = async () => {
       try {
         setIsLoading(true);
-        const { data } = await axios.get<MovieResponse>(
-          `https://api.themoviedb.org/3/movie/${category}?language=ko-KR&page=${page}`,
-          {
-            headers: {
-              Authorization: `Bearer ${movieToken}`,
-            },
-          }
-        );
+        const data = await getMovies(category!, page);
         setMovies(data.results);
         setTotalPages(data.total_pages);
       } catch (e) {
@@ -40,7 +33,7 @@ const Movies = () => {
       }
     };
     fetchMovies();
-  }, [category, page]);
+  }, [category, page, movieToken]);
 
   return (
     <div className="flex flex-col items-center">

@@ -18,3 +18,18 @@ export interface NavItem {
   label: string;
   path: string;
 }
+
+export type MovieGenre = {
+  id: number;
+  name: string;
+};
+
+export interface MovieDetail extends Movie {
+  backdrop_path: string;
+  genres: MovieGenre[];
+  homepage: string;
+  runtime: number;
+  status: string;
+  tagline: string;
+  vote_count: number;
+}
