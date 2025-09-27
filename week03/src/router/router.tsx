@@ -1,6 +1,6 @@
 import { createBrowserRouter, type RouteObject } from "react-router-dom";
 import BaseLayout from "../layouts/BaseLayout";
-import NotFound from "../layouts/NotFount";
+import NotFound from "../layouts/NotFound";
 import HomePage from "../pages/HomePage";
 import MovieDetail from "../components/MovieDetail";
 import Movies from "../pages/movie/Movies";

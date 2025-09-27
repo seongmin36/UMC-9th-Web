@@ -12,7 +12,7 @@ const navItems: Record<string, NavItem> = {
 const MovieNavbar = () => {
   return (
     <div className="border-b border-gray-300">
-      <ul className="flex gap-4 px-3 py-6 font-sm text-xl">
+      <ul className="flex gap-4 px-8 py-6 font-sm text-xl">
         {/* Record 객체로 매핑해주는 Object.entries() */}
         {Object.entries(navItems).map(([key, cat]) => (
           <li key={key}>
