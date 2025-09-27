@@ -11,6 +11,8 @@ const Movies = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const { category } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [page, setPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(0);
   console.log(movies);
 
   useEffect(() => {
@@ -21,7 +23,7 @@ const Movies = () => {
       try {
         setIsLoading(true);
         const { data } = await axios.get<MovieResponse>(
-          `https://api.themoviedb.org/3/movie/${category}?language=ko-KR&page=1`,
+          `https://api.themoviedb.org/3/movie/${category}?language=ko-KR&page=${page}`,
           {
             headers: {
               Authorization: `Bearer ${movieToken}`,
@@ -29,6 +31,7 @@ const Movies = () => {
           }
         );
         setMovies(data.results);
+        setTotalPages(data.total_pages);
       } catch (e) {
         console.log(e);
         toast.error(`데이터를 불러오는데 실패했습니다!\n${e}`);
@@ -37,7 +40,7 @@ const Movies = () => {
       }
     };
     fetchMovies();
-  }, [category]);
+  }, [category, page]);
 
   return (
     <div className="flex flex-col items-center">
@@ -46,8 +49,12 @@ const Movies = () => {
         <Pending />
       ) : (
         <>
-          <MoviePagination />
-          <ul className="grid grid-cols-6 gap-4 m-10 mx-40">
+          <MoviePagination
+            total_pages={totalPages}
+            page={page}
+            onPageChange={setPage}
+          />
+          <ul className="grid grid-cols-6 gap-4 mx-40">
             {movies.map((movie) => (
               <li key={movie.id}>
                 <MovieItem movie={movie} />
