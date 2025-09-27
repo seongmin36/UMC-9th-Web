@@ -7,12 +7,13 @@ export type Movie = {
   vote_average: number;
 };
 
-export type MovieResponse = {
+// 영화 리스트 정보
+export interface ResponseMovie {
   page: number;
   results: Movie[];
   total_pages: number;
   total_results: number;
-};
+}
 
 export interface NavItem {
   label: string;
@@ -31,7 +32,24 @@ export type Companies = {
   origin_country: string;
 };
 
-export interface MovieDetail extends Movie {
+export type Cast = {
+  id: number;
+  known_for_department: string;
+  name: string;
+  profile_path: string;
+  character: string;
+};
+
+export type Crew = {
+  id: number;
+  name: string;
+  profile_path: string;
+  credit_id: string;
+  job: string;
+};
+
+// 영화 상세 정보
+export interface ResponseMovieDetail extends Movie {
   backdrop_path: string;
   genres: MovieGenre[];
   homepage: string;
@@ -40,4 +58,11 @@ export interface MovieDetail extends Movie {
   tagline: string;
   vote_count: number;
   production_companies: Companies[];
+}
+
+// 영화 출연진 정보
+export interface ResponseMovieCredits {
+  id: number;
+  cast: Cast[];
+  crew: Crew[];
 }

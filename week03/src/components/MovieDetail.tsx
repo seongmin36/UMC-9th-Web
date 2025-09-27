@@ -1,14 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import type { MovieDetail } from "../types/movie";
-import { getMovieDetails } from "../apis/movies";
+import type { ResponseMovieCredits, ResponseMovieDetail } from "../types/movie";
+import { getMovieCredits, getMovieDetails } from "../apis/movies";
 import toast from "react-hot-toast";
 import Pending from "./common/Pending";
 
 const MovieDetail = () => {
   const { movieId } = useParams();
   const numMovieId = Number(movieId);
-  const [movie, setMovie] = useState<MovieDetail | null>(null);
+  const [movie, setMovie] = useState<ResponseMovieDetail | null>(null);
+  const [credit, setCredit] = useState<ResponseMovieCredits | null>(null);
   const [isMore, setIsMore] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const tmdbBaseUrl = import.meta.env.VITE_TMDB_IMAGE_BASE_URL; // 예: https://image.tmdb.org/t/p/original
@@ -18,8 +19,10 @@ const MovieDetail = () => {
     const fetchMovieDetails = async () => {
       try {
         setIsLoading(true);
-        const data = await getMovieDetails(numMovieId);
-        setMovie(data);
+        const { data: detailData } = await getMovieDetails(numMovieId);
+        const { data: creditData } = await getMovieCredits(numMovieId);
+        setMovie(detailData);
+        setCredit(creditData);
       } catch (e) {
         console.error(e);
         toast.error(`데이터를 불러오는데 실패했습니다!\n${e}`);
@@ -31,7 +34,6 @@ const MovieDetail = () => {
   }, [numMovieId]);
 
   const overview = movie?.overview ?? "";
-
   const handleClamp = useMemo(() => overview.trim().length < 150, [overview]);
 
   const handleIsMoreBtn = () => {
@@ -66,7 +68,7 @@ const MovieDetail = () => {
             ring-1 ring-white/10 shadow-xl
           "
             >
-              <div className="flex">
+              <div className="flex mb-20">
                 <img
                   src={`${tmdbBaseUrl}${movie?.poster_path}`}
                   alt=""
@@ -139,6 +141,42 @@ const MovieDetail = () => {
                     </>
                   )}
                 </div>
+              </div>
+              {/* credit 정보 */}
+              <span className="text-4xl font-medium">감독/출연</span>
+              <div className="grid grid-cols-8 gap-4 mt-5">
+                {/* 감독 */}
+                {credit?.crew
+                  .filter((crew) => crew.job === "Director")
+                  .map((director) => (
+                    <div className="text-center text-gray-300 w-25">
+                      <img
+                        src={`${tmdbBaseUrl}${director.profile_path}`}
+                        alt=""
+                        className="w-full border rounded-md border-white/80"
+                      />
+                      <p className="text-white" key={director.credit_id}>
+                        {director.name}
+                      </p>
+                      <p className="text-[10px]">{director.job}</p>
+                    </div>
+                  ))}
+                {/* 출연진 */}
+                {credit?.cast.slice(0, 15).map((cast) => (
+                  <>
+                    <div className="text-center text-gray-300 w-25">
+                      <img
+                        src={`${tmdbBaseUrl}${cast.profile_path}`}
+                        alt=""
+                        className="w-full border rounded-md border-white/80"
+                      />
+                      <p className="text-white" key={cast.id}>
+                        {cast.name}
+                      </p>
+                      <p className="text-[10px]">{cast.character}</p>
+                    </div>
+                  </>
+                ))}
               </div>
             </div>
           </div>
