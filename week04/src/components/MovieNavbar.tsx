@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import type { NavItem } from "../types/movie";
 
 const navItems: Record<string, NavItem> = {
@@ -10,9 +10,10 @@ const navItems: Record<string, NavItem> = {
 };
 
 const MovieNavbar = () => {
+  const navigate = useNavigate();
   return (
     <div className="border-b border-gray-300">
-      <ul className="flex gap-4 px-8 py-6 font-sm text-xl">
+      <ul className="relative flex gap-4 px-8 py-6 font-sm text-xl">
         {/* Record 객체로 매핑해주는 Object.entries() */}
         {Object.entries(navItems).map(([key, cat]) => (
           <li key={key}>
@@ -25,6 +26,24 @@ const MovieNavbar = () => {
             </NavLink>
           </li>
         ))}
+        <div className="flex absolute right-10 gap-2 justify-center items-center">
+          <button
+            onClick={() =>
+              navigate(`/signup`, { state: { from: location.pathname } })
+            }
+            className="bg-[#1298c5] rounded-md text-sm text-white text-center w-20 py-2.5"
+          >
+            로그인
+          </button>
+          <button
+            onClick={() =>
+              navigate(`/signup`, { state: { from: location.pathname } })
+            }
+            className="border-2 rounded-md text-sm text-[#1298c5] text-center w-20 py-2"
+          >
+            회원가입
+          </button>
+        </div>
       </ul>
     </div>
   );

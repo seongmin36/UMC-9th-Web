@@ -5,6 +5,8 @@ import HomePage from "../pages/HomePage";
 import MovieDetail from "../components/MovieDetail";
 import Movies from "../pages/movie/Movies";
 import MoviesHome from "../pages/movie/MoviesHome";
+import Login from "../pages/Login";
+import Signup from "../pages/Signup";
 
 const publicLayout: RouteObject[] = [
   {
@@ -15,6 +17,14 @@ const publicLayout: RouteObject[] = [
       {
         index: true,
         element: <HomePage />,
+      },
+      {
+        path: "login",
+        element: <Login />,
+      },
+      {
+        path: "signup",
+        element: <Signup />,
       },
       {
         path: "movies",
