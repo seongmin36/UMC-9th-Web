@@ -26,7 +26,7 @@ const MovieNavbar = () => {
             </NavLink>
           </li>
         ))}
-        <div className="flex absolute right-10 gap-2 justify-center items-center">
+        <div className="flex absolute right-10 top-5 gap-2 justify-center items-center">
           <button
             onClick={() =>
               navigate(`/signup`, { state: { from: location.pathname } })
