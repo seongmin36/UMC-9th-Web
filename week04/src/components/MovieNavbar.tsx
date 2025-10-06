@@ -29,7 +29,7 @@ const MovieNavbar = () => {
         <div className="flex absolute right-10 top-5 gap-2 justify-center items-center">
           <button
             onClick={() =>
-              navigate(`/signup`, { state: { from: location.pathname } })
+              navigate(`/login`, { state: { from: location.pathname } })
             }
             className="bg-[#1298c5] rounded-md text-sm text-white text-center w-20 py-2.5"
           >
