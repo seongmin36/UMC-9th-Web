@@ -1,34 +1,49 @@
 import { IoIosArrowBack } from "react-icons/io";
 import { useBack } from "../hooks/useBack";
-import useForm from "../hooks/useForm";
-import validateSignin from "../utils/validate";
-import type { UserLoginInformation } from "../types/userInfo";
+import { type SubmitHandler } from "react-hook-form";
+import toast, { Toaster } from "react-hot-toast";
+import { postLogin } from "../apis/auth";
+import { useNavigate } from "react-router-dom";
+import { useLoginForm } from "../hooks/useLoginForm";
+import type { UserLoginInformation } from "../utils/validateSchema";
+import { useGetLocalStorage } from "../hooks/useGetLocalStorage";
 
 const Login = () => {
   const handleBack = useBack("/");
-  const { values, touched, error, getInputProps } =
-    useForm<UserLoginInformation>({
-      initialValue: {
-        email: "",
-        password: "",
-      },
-      validate: validateSignin,
-    });
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid, errors },
+  } = useLoginForm();
+  const navigate = useNavigate();
+  const { setTokken } = useGetLocalStorage("accessToken");
 
-  const handleSubmit = () => {
-    console.log(values);
+  const onSubmit: SubmitHandler<UserLoginInformation> = async (
+    data: UserLoginInformation
+  ) => {
+    try {
+      const res = await toast.promise(postLogin(data), {
+        loading: "로그인 중...",
+        success: "로그인 성공!",
+        error: "로그인 에러!",
+      });
+      if (res.data.accessToken) {
+        setTokken(res.data.accessToken);
+        console.log("토큰 저장 성공", res.data.accessToken);
+      }
+      console.log("로그인 성공!", res);
+      setTimeout(() => navigate("/"), 2000);
+    } catch (e) {
+      console.error(e);
+    }
   };
-
-  // 오류가 하나라도 없거나, 입력값이 비어있는 경우
-  const isDisabled =
-    Object.values(error || {}).some((error) => error.length > 0) ||
-    Object.values(values).some((value) => value === "");
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col items-center justify-center gap-8 min-h-150"
     >
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="relative flex items-center justify-center text-2xl min-w-90">
         <button onClick={handleBack} className="absolute left-0 cursor-pointer">
           <IoIosArrowBack size={25} />
@@ -51,28 +66,30 @@ const Login = () => {
         </div>
         <div className="flex flex-col gap-3">
           <input
-            {...getInputProps("email")}
+            {...register("email")}
             className="text-start border-2 border-[#50bcdf] rounded-lg px-4 py-3 focus:outline-[#1298c5]"
             type="email"
             placeholder="이메일을 입력해주세요!"
           />
-          {error?.email && touched?.email && (
-            <div className="pl-2 -mt-3 text-xs text-red-500">{error.email}</div>
+          {errors?.email && (
+            <div className="pl-2 -mt-3 text-xs text-red-500">
+              {errors.email.message}
+            </div>
           )}
           <input
-            {...getInputProps("password")}
+            {...register("password")}
             className="border-2 border-[#50bcdf] rounded-lg px-4 py-3 focus:outline-[#1298c5]"
             type="password"
             placeholder="비밀번호를 입력해주세요!"
           />
-          {error?.password && touched?.password && (
+          {errors?.password && (
             <div className="pl-2 -mt-3 text-xs text-red-500">
-              {error.password}
+              {errors.password.message}
             </div>
           )}
           <button
-            disabled={isDisabled}
-            onClick={handleSubmit}
+            type="submit"
+            disabled={!isValid}
             className="text-white bg-[#50bcdf] rounded-lg px-4 py-3 cursor-pointer hover:bg-[#1298c5] transition-colors disabled:bg-gray-300"
           >
             로그인

@@ -3,16 +3,19 @@ import { RiEyeCloseLine } from "react-icons/ri";
 import { IoEyeSharp } from "react-icons/io5";
 import { CiMail } from "react-icons/ci";
 import User from "../assets/user.svg";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useFormState, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { postSignup } from "../apis/auth";
-import type { UserSignupInformation } from "../types/userInfo";
+import { useSignupForm } from "../hooks/useLoginForm";
+import type { UserSignupInformation } from "../utils/validateSchema";
+
+import { DevTool } from "@hookform/devtools";
 
 const SignupStep = () => {
   const [passwordVisible, setPasswordVisible] = useState({
     password: true,
-    passwordConfirm: true,
+    confirmPassword: true,
   });
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [data, setData] = useState<UserSignupInformation>();
@@ -21,12 +24,15 @@ const SignupStep = () => {
   const {
     register,
     handleSubmit,
-    watch,
     getValues,
-    formState: { errors, isValid, isDirty },
-  } = useForm<UserSignupInformation>({
-    mode: "onChange",
-    reValidateMode: "onBlur",
+    control,
+    watch,
+    formState: { errors, isValid },
+  } = useSignupForm();
+
+  const { errors: formErrors, dirtyFields } = useFormState({
+    control,
+    name: ["email", "password", "confirmPassword", "name"],
   });
 
   const onSubmit: SubmitHandler<UserSignupInformation> = async (
@@ -45,7 +51,7 @@ const SignupStep = () => {
     }
   };
 
-  const handlePasswordVisible = (toggle: "password" | "passwordConfirm") => {
+  const handlePasswordVisible = (toggle: "password" | "confirmPassword") => {
     setPasswordVisible((prev) => ({
       ...prev,
       [toggle]: !prev[toggle],
@@ -60,6 +66,8 @@ const SignupStep = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="min-w-90">
+      <DevTool control={control} />
+
       {step === 1 && (
         <div className="flex flex-col gap-3">
           <button className="relative flex justify-center text-lg w-full border-2 border-[#50bcdf] font-medium rounded-lg px-4 py-3 cursor-pointer">
@@ -76,13 +84,7 @@ const SignupStep = () => {
             <div className="flex-1 border-t-2 border-[#636363]" />
           </div>
           <input
-            {...register("email", {
-              required: "이메일을 입력해주세요!",
-              pattern: {
-                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                message: "올바른 이메일 형식이 아닙니다!",
-              },
-            })}
+            {...register("email")}
             className="text-start border-2 border-[#50bcdf] rounded-lg px-4 py-3 focus:outline-[#1298c5]"
             type="email"
             placeholder="이메일을 입력해주세요!"
@@ -94,7 +96,7 @@ const SignupStep = () => {
           )}
           <button
             type="button"
-            disabled={!(isValid && isDirty)}
+            disabled={!!formErrors.email || !dirtyFields.email}
             onClick={handleNextStep}
             className="text-white bg-[#50bcdf] rounded-lg px-4 py-3 cursor-pointer hover:bg-[#1298c5] transition-colors disabled:bg-gray-300"
           >
@@ -112,17 +114,7 @@ const SignupStep = () => {
             </span>
             <div className="relative">
               <input
-                {...register("password", {
-                  required: "비밀번호를 입력해주세요!",
-                  minLength: {
-                    value: 8,
-                    message: "비밀번호는 8자 이상으로 입력해주세요!",
-                  },
-                  maxLength: {
-                    value: 20,
-                    message: "비밀번호는 20자 이하로 입력해주세요!",
-                  },
-                })}
+                {...register("password")}
                 className="border-2 w-full border-[#50bcdf] rounded-lg px-4 py-3 focus:outline-[#1298c5]"
                 type={passwordVisible.password ? "password" : "text"}
                 placeholder="비밀번호를 입력해주세요!"
@@ -145,34 +137,39 @@ const SignupStep = () => {
             )}
             <div className="relative">
               <input
-                {...register("passwordConfirm", {
+                {...register("confirmPassword", {
                   required: "비밀번호 확인을 입력해주세요!",
                   validate: (value) =>
                     value === watch("password") ||
                     "비밀번호가 일치하지 않습니다!",
                 })}
                 className="border-2 w-full border-[#50bcdf] rounded-lg px-4 py-3 focus:outline-[#1298c5]"
-                type={passwordVisible.passwordConfirm ? "password" : "text"}
+                type={passwordVisible.confirmPassword ? "password" : "text"}
                 placeholder="비밀번호를 다시 한 번 입력해주세요!"
               />
               <button
-                onClick={() => handlePasswordVisible("passwordConfirm")}
+                onClick={() => handlePasswordVisible("confirmPassword")}
                 className="absolute right-4 top-4"
               >
-                {passwordVisible.passwordConfirm ? (
+                {passwordVisible.confirmPassword ? (
                   <RiEyeCloseLine size={20} />
                 ) : (
                   <IoEyeSharp size={20} />
                 )}
               </button>
             </div>
-            {errors?.passwordConfirm && (
+            {errors?.confirmPassword && (
               <div className="pl-2 -mt-3 text-xs text-red-500">
-                {errors.passwordConfirm.message}
+                {errors.confirmPassword.message}
               </div>
             )}
             <button
-              disabled={!(isValid && isDirty)}
+              disabled={
+                !!formErrors.password ||
+                !!formErrors.confirmPassword ||
+                !dirtyFields.password ||
+                !dirtyFields.confirmPassword
+              }
               onClick={() => setStep(3)}
               className="text-white bg-[#50bcdf] rounded-lg px-4 py-3 cursor-pointer hover:bg-[#1298c5] transition-colors disabled:bg-gray-300"
             >
@@ -187,9 +184,7 @@ const SignupStep = () => {
               <img src={User} alt="user" className="w-55 h-55" />
             </div>
             <input
-              {...register("name", {
-                required: "닉네임을 입력해주세요!",
-              })}
+              {...register("name")}
               className="border-2 w-full border-[#50bcdf] rounded-lg px-4 py-3 focus:outline-[#1298c5]"
               type="text"
               placeholder="닉네임을 입력해주세요!"
