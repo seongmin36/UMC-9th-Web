@@ -1,14 +1,13 @@
 import { IoIosArrowBack } from "react-icons/io";
 import { useBack } from "../hooks/useBack";
 import useForm from "../hooks/useForm";
-import type { UserSinginInformation } from "../utils/validate";
 import validateSignin from "../utils/validate";
-import type { KeyboardEvent } from "react";
+import type { UserLoginInformation } from "../types/userInfo";
 
 const Login = () => {
   const handleBack = useBack("/");
   const { values, touched, error, getInputProps } =
-    useForm<UserSinginInformation>({
+    useForm<UserLoginInformation>({
       initialValue: {
         email: "",
         password: "",
@@ -20,20 +19,17 @@ const Login = () => {
     console.log(values);
   };
 
-  const handleEnter = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleSubmit();
-    }
-  };
-
   // 오류가 하나라도 없거나, 입력값이 비어있는 경우
   const isDisabled =
     Object.values(error || {}).some((error) => error.length > 0) ||
     Object.values(values).some((value) => value === "");
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-150 gap-8">
-      <div className="relative min-w-90 flex items-center justify-center text-2xl">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col items-center justify-center gap-8 min-h-150"
+    >
+      <div className="relative flex items-center justify-center text-2xl min-w-90">
         <button onClick={handleBack} className="absolute left-0 cursor-pointer">
           <IoIosArrowBack size={25} />
         </button>
@@ -61,17 +57,16 @@ const Login = () => {
             placeholder="이메일을 입력해주세요!"
           />
           {error?.email && touched?.email && (
-            <div className="text-red-500 text-xs -mt-3 pl-2">{error.email}</div>
+            <div className="pl-2 -mt-3 text-xs text-red-500">{error.email}</div>
           )}
           <input
             {...getInputProps("password")}
-            onKeyDown={handleEnter}
             className="border-2 border-[#50bcdf] rounded-lg px-4 py-3 focus:outline-[#1298c5]"
             type="password"
             placeholder="비밀번호를 입력해주세요!"
           />
           {error?.password && touched?.password && (
-            <div className="text-red-500 text-xs -mt-3 pl-2">
+            <div className="pl-2 -mt-3 text-xs text-red-500">
               {error.password}
             </div>
           )}
@@ -84,7 +79,7 @@ const Login = () => {
           </button>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 

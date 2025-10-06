@@ -1,9 +1,6 @@
-export type UserSinginInformation = {
-  email: string;
-  password: string;
-};
+import type { UserLoginInformation } from "../types/userInfo";
 
-function validateUser(values: UserSinginInformation) {
+function validateUser(values: UserLoginInformation) {
   const errors = {
     email: "",
     password: "",
@@ -25,7 +22,7 @@ function validateUser(values: UserSinginInformation) {
 }
 
 // 아키텍처 레이어 분리
-function validateSignin(values: UserSinginInformation) {
+function validateSignin(values: UserLoginInformation) {
   return validateUser(values);
 }
 

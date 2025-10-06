@@ -3,7 +3,7 @@ import type {
   ResponseMovieCredits,
   ResponseMovieDetail,
 } from "../types/movie";
-import { api } from "./apis";
+import { api } from "./axios";
 
 // Movie 조회
 export const getMovies = async (category: string, page: number) => {
