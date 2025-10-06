@@ -3,6 +3,7 @@ import { useBack } from "../hooks/useBack";
 import useForm from "../hooks/useForm";
 import type { UserSinginInformation } from "../utils/validate";
 import validateSignin from "../utils/validate";
+import type { KeyboardEvent } from "react";
 
 const Login = () => {
   const handleBack = useBack("/");
@@ -15,10 +16,14 @@ const Login = () => {
       validate: validateSignin,
     });
 
-  console.log(values);
-
   const handleSubmit = () => {
     console.log(values);
+  };
+
+  const handleEnter = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
   };
 
   // 오류가 하나라도 없거나, 입력값이 비어있는 경우
@@ -60,6 +65,7 @@ const Login = () => {
           )}
           <input
             {...getInputProps("password")}
+            onKeyDown={handleEnter}
             className="border-2 border-[#50bcdf] rounded-lg px-4 py-3 focus:outline-[#1298c5]"
             type="password"
             placeholder="비밀번호를 입력해주세요!"
