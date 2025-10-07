@@ -146,6 +146,10 @@ const SignupStep = () => {
                     value === watch("password") ||
                     "비밀번호가 일치하지 않습니다!",
                 })}
+                onKeyDown={(e) => {
+                  e.preventDefault();
+                  handleNextStep();
+                }}
                 className="border-2 w-full border-[#50bcdf] rounded-lg px-4 py-3 focus:outline-[#1298c5]"
                 type={passwordVisible.confirmPassword ? "password" : "text"}
                 placeholder="비밀번호를 다시 한 번 입력해주세요!"
