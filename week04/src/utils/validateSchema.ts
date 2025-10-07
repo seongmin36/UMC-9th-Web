@@ -29,6 +29,12 @@ export const signupSchema = z
   .refine((data) => data.password === data.confirmPassword, {
     message: "비밀번호가 일치하지 않습니다!",
     path: ["confirmPassword"],
+    when(payload) {
+      // password와 confirmPassword가 유효할 때만 refine 실행
+      return signupSchema
+        .pick({ password: true, confirmPassword: true })
+        .safeParse(payload.value).success;
+    },
   });
 
 // zod가 loginSchema, signupSchema의 타입을 임의로 추정

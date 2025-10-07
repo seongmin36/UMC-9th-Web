@@ -21,7 +21,7 @@ export const getMovieDetails = async (movieId: number) => {
   return { data };
 };
 
-// Movie Credis 조회
+// Movie Credits 조회
 export const getMovieCredits = async (movieId: number) => {
   const { data } = await api.get<ResponseMovieCredits>(
     `/movie/${movieId}/credits?language=ko-KO`
