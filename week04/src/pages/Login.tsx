@@ -1,13 +1,10 @@
 import { IoIosArrowBack } from "react-icons/io";
 import { useBack } from "../hooks/useBack";
 import { type SubmitHandler } from "react-hook-form";
-import toast, { Toaster } from "react-hot-toast";
-import { postLogin } from "../apis/auth";
-import { useNavigate } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import { useLoginForm } from "../hooks/useLoginForm";
 import type { UserLoginInformation } from "../utils/validateSchema";
-import { useGetLocalStorage } from "../hooks/useGetLocalStorage";
-import { AxiosError } from "axios";
+import { useLoginSubmit } from "../hooks/useLoginHandler";
 
 const Login = () => {
   const handleBack = useBack("/");
@@ -16,49 +13,10 @@ const Login = () => {
     handleSubmit,
     formState: { isValid, errors },
   } = useLoginForm();
-  const navigate = useNavigate();
-  const { setTokken } = useGetLocalStorage("accessToken");
+  const { handleLogin } = useLoginSubmit();
 
-  const onSubmit: SubmitHandler<UserLoginInformation> = async (
-    data: UserLoginInformation
-  ) => {
-    try {
-      const res = await toast.promise(postLogin(data), {
-        loading: "로그인 중...",
-        success: "로그인 성공!",
-      });
-      if (res.data.accessToken) {
-        setTokken(res.data.accessToken);
-        console.log("토큰 저장 성공", res.data.accessToken);
-      }
-      console.log("로그인 성공!", res);
-      setTimeout(() => navigate("/"), 2000);
-    } catch (e: unknown) {
-      if (e instanceof AxiosError) {
-        const status = e.response?.status;
-        const message =
-          e.response?.data?.message ?? "요청 처리 중 오류가 발생했습니다.";
-
-        switch (status) {
-          case 401:
-            if (message.includes("비밀번호"))
-              toast.error("비밀번호가 일치하지 않습니다.");
-            else if (message.includes("유저를 찾을 수"))
-              toast.error("등록되지 않은 이메일입니다.");
-            else toast.error(message);
-            break;
-          case 500:
-            toast.error("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
-            break;
-          default:
-            toast.error(message);
-            break;
-        }
-      } else {
-        toast.error("알 수 없는 오류가 발생했습니다.");
-        console.error("Unknown Error:", e);
-      }
-    }
+  const onSubmit: SubmitHandler<UserLoginInformation> = (data) => {
+    handleLogin(data);
   };
 
   return (
