@@ -10,8 +10,6 @@ import { postSignup } from "../apis/auth";
 import { useSignupForm } from "../hooks/useLoginForm";
 import type { UserSignupInformation } from "../utils/validateSchema";
 
-import { DevTool } from "@hookform/devtools";
-
 const SignupStep = () => {
   const [passwordVisible, setPasswordVisible] = useState({
     password: true,
@@ -64,10 +62,10 @@ const SignupStep = () => {
     setStep((prev) => (prev < 3 ? ((prev + 1) as 1 | 2 | 3) : prev));
   };
 
+  console.log(getValues().password);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="min-w-90">
-      <DevTool control={control} />
-
       {step === 1 && (
         <div className="flex flex-col gap-3">
           <button className="relative flex justify-center text-lg w-full border-2 border-[#50bcdf] font-medium rounded-lg px-4 py-3 cursor-pointer">
@@ -85,6 +83,12 @@ const SignupStep = () => {
           </div>
           <input
             {...register("email")}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                handleNextStep();
+              }
+            }}
             className="text-start border-2 border-[#50bcdf] rounded-lg px-4 py-3 focus:outline-[#1298c5]"
             type="email"
             placeholder="이메일을 입력해주세요!"
@@ -138,7 +142,6 @@ const SignupStep = () => {
             <div className="relative">
               <input
                 {...register("confirmPassword", {
-                  required: "비밀번호 확인을 입력해주세요!",
                   validate: (value) =>
                     value === watch("password") ||
                     "비밀번호가 일치하지 않습니다!",

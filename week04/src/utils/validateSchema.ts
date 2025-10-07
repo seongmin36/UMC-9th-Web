@@ -23,7 +23,7 @@ export const signupSchema = z
       .nonempty("비밀번호를 입력해주세요!")
       .min(8, "비밀번호는 8자 이상으로 입력해주세요!")
       .max(20, "비밀번호는 20자 이하로 입력해주세요!"),
-    confirmPassword: z.string(),
+    confirmPassword: z.string().nonempty("비밀번호 확인을 입력해주세요!"),
     name: z.string().nonempty("닉네임을 입력해주세요!"),
   })
   .refine((data) => data.password === data.confirmPassword, {
