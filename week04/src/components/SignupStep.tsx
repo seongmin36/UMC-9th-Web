@@ -3,7 +3,7 @@ import { RiEyeCloseLine } from "react-icons/ri";
 import { IoEyeSharp } from "react-icons/io5";
 import { CiMail } from "react-icons/ci";
 import User from "../assets/user.svg";
-import { useFormState, type SubmitHandler } from "react-hook-form";
+import { type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { postSignup } from "../apis/auth";
@@ -23,15 +23,9 @@ const SignupStep = () => {
     register,
     handleSubmit,
     getValues,
-    control,
     watch,
     formState: { errors, isValid },
   } = useSignupForm();
-
-  const { errors: formErrors, dirtyFields } = useFormState({
-    control,
-    name: ["email", "password", "confirmPassword", "name"],
-  });
 
   const onSubmit: SubmitHandler<UserSignupInformation> = async (
     data: UserSignupInformation
@@ -61,8 +55,6 @@ const SignupStep = () => {
     setData(current);
     setStep((prev) => (prev < 3 ? ((prev + 1) as 1 | 2 | 3) : prev));
   };
-
-  console.log(getValues().password);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="min-w-90">
@@ -100,7 +92,7 @@ const SignupStep = () => {
           )}
           <button
             type="button"
-            disabled={!!formErrors.email || !dirtyFields.email}
+            disabled={!!errors.email || !watch("email")}
             onClick={handleNextStep}
             className="text-white bg-[#50bcdf] rounded-lg px-4 py-3 cursor-pointer hover:bg-[#1298c5] transition-colors disabled:bg-gray-300"
           >
@@ -141,14 +133,12 @@ const SignupStep = () => {
             )}
             <div className="relative">
               <input
-                {...register("confirmPassword", {
-                  validate: (value) =>
-                    value === watch("password") ||
-                    "비밀번호가 일치하지 않습니다!",
-                })}
+                {...register("confirmPassword")}
                 onKeyDown={(e) => {
-                  e.preventDefault();
-                  handleNextStep();
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleNextStep();
+                  }
                 }}
                 className="border-2 w-full border-[#50bcdf] rounded-lg px-4 py-3 focus:outline-[#1298c5]"
                 type={passwordVisible.confirmPassword ? "password" : "text"}
@@ -171,12 +161,7 @@ const SignupStep = () => {
               </div>
             )}
             <button
-              disabled={
-                !!formErrors.password ||
-                !!formErrors.confirmPassword ||
-                !dirtyFields.password ||
-                !dirtyFields.confirmPassword
-              }
+              disabled={!!errors.password || !!errors.confirmPassword}
               onClick={() => setStep(3)}
               className="text-white bg-[#50bcdf] rounded-lg px-4 py-3 cursor-pointer hover:bg-[#1298c5] transition-colors disabled:bg-gray-300"
             >

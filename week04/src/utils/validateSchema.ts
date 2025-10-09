@@ -27,7 +27,7 @@ export const signupSchema = z
     name: z.string().nonempty("닉네임을 입력해주세요!"),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "비밀번호가 일치하지 않습니다!",
+    message: "",
     path: ["confirmPassword"],
     when(payload) {
       // password와 confirmPassword가 유효할 때만 refine 실행
