@@ -37,3 +37,15 @@ export const postLogin = async (
     throw e;
   }
 };
+
+export const postLogout = async () => {
+  try {
+    const { data } = await axiosInstance.post<ResponseLoginDto>(
+      `v1/auth/signout`
+    );
+
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+};

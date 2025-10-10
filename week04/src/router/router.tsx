@@ -2,11 +2,13 @@ import { createBrowserRouter, type RouteObject } from "react-router-dom";
 import BaseLayout from "../layouts/BaseLayout";
 import NotFound from "../layouts/NotFound";
 import HomePage from "../pages/HomePage";
-import MovieDetail from "../components/MovieDetail";
+import MovieDetail from "../components/movie/MovieDetail";
 import Movies from "../pages/movie/Movies";
 import MoviesHome from "../pages/movie/MoviesHome";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
+import MyPagee from "../pages/MyPagee";
+import MyPage from "../pages/MyPage";
 
 const publicLayout: RouteObject[] = [
   {
@@ -38,10 +40,26 @@ const publicLayout: RouteObject[] = [
         path: "movies/details/:movieId",
         element: <MovieDetail />,
       },
+      {
+        path: "myPagee",
+        element: <MyPagee />,
+      },
     ],
   },
 ];
 
-const router = createBrowserRouter([...publicLayout]);
+const protectedRoutes: RouteObject[] = [
+  {
+    element: <BaseLayout protectedRoutes={true} />,
+    children: [
+      {
+        path: "mypage",
+        element: <MyPage />,
+      },
+    ],
+  },
+];
+
+const router = createBrowserRouter([...publicLayout, ...protectedRoutes]);
 
 export default router;

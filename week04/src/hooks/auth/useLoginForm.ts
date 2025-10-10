@@ -5,7 +5,7 @@ import {
   signupSchema,
   type UserLoginInformation,
   type UserSignupInformation,
-} from "../utils/validateSchema";
+} from "../../utils/validateSchema";
 
 export function useLoginForm() {
   return useForm<UserLoginInformation>({

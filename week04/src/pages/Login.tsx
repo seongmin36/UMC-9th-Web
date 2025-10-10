@@ -1,10 +1,10 @@
 import { IoIosArrowBack } from "react-icons/io";
 import { useBack } from "../hooks/useBack";
 import { type SubmitHandler } from "react-hook-form";
-import { Toaster } from "react-hot-toast";
-import { useLoginForm } from "../hooks/useLoginForm";
+import { useLoginForm } from "../hooks/auth/useLoginForm";
 import type { UserLoginInformation } from "../utils/validateSchema";
-import { useLoginSubmit } from "../hooks/useLoginHandler";
+import { useLoginSubmit } from "../hooks/auth/useLoginHandler";
+import { useAuthRedirect } from "../hooks/auth/useAuth";
 
 const Login = () => {
   const handleBack = useBack("/");
@@ -15,6 +15,9 @@ const Login = () => {
   } = useLoginForm();
   const { handleLogin } = useLoginSubmit();
 
+  // 로그인 상태 확인 리다이렉트
+  useAuthRedirect();
+
   const onSubmit: SubmitHandler<UserLoginInformation> = (data) => {
     handleLogin(data);
   };
@@ -24,7 +27,6 @@ const Login = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col items-center justify-center gap-8 min-h-150"
     >
-      <Toaster position="top-center" reverseOrder={false} />
       <div className="relative flex items-center justify-center text-2xl min-w-90">
         <button onClick={handleBack} className="absolute left-0 cursor-pointer">
           <IoIosArrowBack size={25} />

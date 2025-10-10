@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
 export const useGetLocalStorage = <T>(key: string) => {
-  const setTokken = useCallback(
+  const setToken = useCallback(
     (values: T) => {
       try {
         localStorage.setItem(key, JSON.stringify(values));
@@ -12,7 +12,7 @@ export const useGetLocalStorage = <T>(key: string) => {
     [key]
   );
 
-  const getTokken = useCallback((): T | null => {
+  const getToken = useCallback((): T | null => {
     try {
       const value = localStorage.getItem(key);
       return value ? (JSON.parse(value) as T) : null;
@@ -22,5 +22,13 @@ export const useGetLocalStorage = <T>(key: string) => {
     }
   }, [key]);
 
-  return { setTokken, getTokken };
+  const removeToken = useCallback(() => {
+    try {
+      localStorage.removeItem(key);
+    } catch (e) {
+      console.error(e);
+    }
+  }, [key]);
+
+  return { setToken, getToken, removeToken };
 };

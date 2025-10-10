@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import type { ResponseMovieCredits, ResponseMovieDetail } from "../types/movie";
-import { getMovieCredits, getMovieDetails } from "../apis/movies";
+import type {
+  ResponseMovieCredits,
+  ResponseMovieDetail,
+} from "../../types/movie";
+import { getMovieCredits, getMovieDetails } from "../../apis/movies";
 import toast from "react-hot-toast";
-import Pending from "./common/Pending";
+import Pending from "../common/Pending";
 
 const MovieDetail = () => {
   const { movieId } = useParams();

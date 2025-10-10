@@ -1,7 +1,7 @@
 import { useState } from "react";
-import MovieItem from "../../components/MovieItem";
+import MovieItem from "../../components/movie/MovieItem";
 import { useParams } from "react-router-dom";
-import MoviePagination from "../../components/MoviePagination";
+import MoviePagination from "../../components/movie/MoviePagination";
 import Pending from "../../components/common/Pending";
 import { Toaster } from "react-hot-toast";
 import useCustomFetch from "../../hooks/useCustomFetch";

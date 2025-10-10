@@ -7,7 +7,7 @@ import { type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { postSignup } from "../apis/auth";
-import { useSignupForm } from "../hooks/useLoginForm";
+import { useSignupForm } from "../hooks/auth/useLoginForm";
 import type { UserSignupInformation } from "../utils/validateSchema";
 
 const SignupStep = () => {
