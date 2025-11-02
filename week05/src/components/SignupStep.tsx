@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { postSignup } from "../apis/auth";
 import { useSignupForm } from "../hooks/auth/useLoginForm";
 import type { UserSignupInformation } from "../utils/validateSchema";
+import GoogleLoginButton from "./google/GoogleLoginButton";
 
 const SignupStep = () => {
   const [passwordVisible, setPasswordVisible] = useState({
@@ -37,7 +38,7 @@ const SignupStep = () => {
         error: "회원가입 실패!",
       });
       console.log("회원가입 성공", res);
-      setTimeout(() => navigate("/"), 2000);
+      setTimeout(() => navigate("/login"), 2000);
     } catch (e) {
       console.error(e);
     }
@@ -60,14 +61,7 @@ const SignupStep = () => {
     <form onSubmit={handleSubmit(onSubmit)} className="min-w-90">
       {step === 1 && (
         <div className="flex flex-col gap-3">
-          <button className="relative flex justify-center text-lg w-full border-2 border-[#50bcdf] font-medium rounded-lg px-4 py-3 cursor-pointer">
-            <img
-              src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg"
-              alt="google icon"
-              className="absolute left-4 w-7"
-            />
-            <p>구글 로그인</p>
-          </button>
+          <GoogleLoginButton />
           <div className="flex items-center gap-4">
             <div className="flex-1 border-t-2 border-[#636363]" />
             <p className="font-medium text-[#636363]">OR</p>

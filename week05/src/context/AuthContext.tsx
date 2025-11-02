@@ -10,6 +10,7 @@ interface AuthContextType {
   login: (loginData: RequestLoginDto) => Promise<void>;
   logout: () => Promise<void>;
   refreshAccessToken: () => Promise<string | null>;
+  setToken: (access: string, refresh?: string) => void;
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -18,6 +19,8 @@ export const AuthContext = createContext<AuthContextType>({
   login: async () => {},
   logout: async () => {},
   refreshAccessToken: async () => "",
+  // setToken은 토큰 상태를 업데이트하는 함수
+  setToken: () => {},
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -64,17 +67,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = async () => {
     try {
       await postLogout();
-
-      clearAccessToken();
-      clearRefreshToken();
     } catch (e) {
       console.error(e);
+    } finally {
+      clearAccessToken();
+      clearRefreshToken();
+      // 토큰 상태를 null로 초기화
+      setAccessToken(null);
+      setRefreshToken(null);
     }
   };
 
   return (
     <AuthContext.Provider
-      value={{ accessToken, refreshToken, login, logout, refreshAccessToken }}
+      value={{
+        accessToken,
+        refreshToken,
+        login,
+        logout,
+        refreshAccessToken,
+        setToken,
+      }}
     >
       {children}
     </AuthContext.Provider>

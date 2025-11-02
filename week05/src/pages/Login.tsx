@@ -5,6 +5,7 @@ import { useLoginForm } from "../hooks/auth/useLoginForm";
 import type { UserLoginInformation } from "../utils/validateSchema";
 import { useLoginSubmit } from "../hooks/auth/useLoginHandler";
 import { useAuthRedirect } from "../hooks/auth/useAuth";
+import GoogleLoginButton from "../components/google/GoogleLoginButton";
 
 const Login = () => {
   const handleBack = useBack("/");
@@ -34,14 +35,7 @@ const Login = () => {
         <p className="font-medium">로그인</p>
       </div>
       <div className="min-w-90">
-        <button className="relative flex justify-center text-lg w-full border-2 border-[#50bcdf] font-medium rounded-lg px-4 py-3 cursor-pointer">
-          <img
-            src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg"
-            alt="google icon"
-            className="absolute left-4 w-7"
-          />
-          <p>구글 로그인</p>
-        </button>
+        <GoogleLoginButton />
         <div className="flex items-center gap-4 my-4">
           <div className="flex-1 border-t-2 border-[#636363]" />
           <p className="font-medium text-[#636363]">OR</p>

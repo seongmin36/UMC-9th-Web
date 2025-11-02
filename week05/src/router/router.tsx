@@ -9,6 +9,7 @@ import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import MyPagee from "../pages/MyPagee";
 import MyPage from "../pages/MyPage";
+import GoogleLoginRedirect from "../components/google/GoogleCallback";
 
 const publicLayout: RouteObject[] = [
   {
@@ -43,6 +44,10 @@ const publicLayout: RouteObject[] = [
       {
         path: "myPagee",
         element: <MyPagee />,
+      },
+      {
+        path: "v1/auth/google/callback",
+        element: <GoogleLoginRedirect />,
       },
     ],
   },
