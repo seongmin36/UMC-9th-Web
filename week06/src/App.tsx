@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useTanstackFetch } from "./hooks/useTanstackFetch";
+import { WelcomeData } from "./components/UserDataDisplay";
 
 const queryClient = new QueryClient();
 
@@ -17,7 +18,7 @@ interface User {
 
 function App() {
   const { data, isPending, isError } = useTanstackFetch<User>(
-    `https://jsonplaceholder.typicode.com/users/1`
+    `https://jsonplaceholder.typicode.com/users/2`
   );
 
   if (isPending) {
@@ -42,6 +43,7 @@ function App() {
         <>
           <h1 className="text-3xl">Tanstack Query</h1>
           {data?.name}
+          <WelcomeData />
         </>
       </AuthProvider>
     </QueryClientProvider>
