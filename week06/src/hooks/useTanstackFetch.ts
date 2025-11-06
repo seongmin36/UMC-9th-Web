@@ -6,6 +6,10 @@ interface CacheEntry<T> {
   lastFetched: number;
 }
 
+const MAX_RETRIES = 3;
+// 1초 딜레이 후 재시도 (총 3번)
+const RETRY_DELAY = 1_000;
+
 // 로컬 스토리지에 저장할 데이터 구조
 const CACHE_STALE_TIME = 5 * 60 * 1000; // 5분
 
@@ -19,6 +23,8 @@ export const useTanstackFetch = <T>(
 
   // Race Condition 구현 (AbortController)
   const abortController = useRef<AbortController | null>(null);
+
+  const retryTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     const now = Date.now();
@@ -47,7 +53,7 @@ export const useTanstackFetch = <T>(
       }
     }
 
-    const fetchData = async (): Promise<void> => {
+    const fetchData = async (currentRetry: number = 0): Promise<void> => {
       setIsPending(true);
       setIsError(false);
       try {
@@ -71,6 +77,28 @@ export const useTanstackFetch = <T>(
           return;
         }
 
+        // 재시도 횟수가 최대 횟수를 초과하지 않았다면 재시도
+        if (currentRetry < MAX_RETRIES) {
+          // 지수 백오프 재시도 딜레이 계산
+          // 지수 백오프 : 재시도 횟수가 증가할수록 딜레이 시간이 2배씩 증가 (기하급수적 증가)
+          const retryDelay = RETRY_DELAY * Math.pow(2, currentRetry);
+          console.log(
+            `재시도 ${
+              currentRetry + 1
+            }/${MAX_RETRIES} Retrying in ${retryDelay}ms later`
+          );
+          retryTimeoutRef.current = setTimeout(() => {
+            fetchData(currentRetry + 1);
+          }, retryDelay);
+          return;
+        } else {
+          // 최대 재시도 횟수 초과 시 에러 상태 설정
+          setIsError(true);
+          setIsPending(false);
+          console.error("최대 재시도 횟수 초과", url);
+          return;
+        }
+
         setIsError(true);
         console.error(e);
       } finally {
@@ -82,6 +110,12 @@ export const useTanstackFetch = <T>(
     // useRef 초기화
     return () => {
       abortController.current?.abort();
+
+      // 예약된 재시도 타이머 취소
+      if (retryTimeoutRef.current !== null) {
+        clearTimeout(retryTimeoutRef.current);
+        retryTimeoutRef.current = null;
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [url]);

@@ -18,7 +18,7 @@ interface User {
 
 function App() {
   const { data, isPending, isError } = useTanstackFetch<User>(
-    `https://jsonplaceholder.typicode.com/users/2`
+    `https://jsonplaceholder.typicode.com/users/22`
   );
 
   if (isPending) {
