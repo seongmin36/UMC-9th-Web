@@ -1,7 +1,7 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
 // import { type AxiosResponse } from "axios";
 import { LOCAL_STORAGE_KEY } from "../constants/key";
-import { useGetLocalStorage } from "../hooks/useGetLocalStorage";
+import { useGetLocalStorage } from "../hooks/common/useGetLocalStorage";
 import { postRefresh } from "./auth";
 // import toast from "react-hot-toast";
 

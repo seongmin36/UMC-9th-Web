@@ -10,7 +10,7 @@ export function useAuth() {
   return context;
 }
 
-export function useAuthRedirect(redirect: string = "/mypagee") {
+export function useAuthRedirect(redirect: string = "/mypage") {
   const navigate = useNavigate();
   const { accessToken } = useAuth();
 
@@ -18,5 +18,5 @@ export function useAuthRedirect(redirect: string = "/mypagee") {
     if (accessToken) {
       navigate(redirect, { replace: true });
     }
-  }, [accessToken, navigate]);
+  }, [accessToken, navigate, redirect]);
 }

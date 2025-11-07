@@ -7,7 +7,6 @@ import Movies from "../pages/movie/Movies";
 import MoviesHome from "../pages/movie/MoviesHome";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
-import MyPagee from "../pages/MyPagee";
 import MyPage from "../pages/MyPage";
 import GoogleLoginRedirect from "../components/google/GoogleCallback";
 
@@ -40,10 +39,6 @@ const publicLayout: RouteObject[] = [
       {
         path: "movies/details/:movieId",
         element: <MovieDetail />,
-      },
-      {
-        path: "myPagee",
-        element: <MyPagee />,
       },
       {
         path: "v1/auth/google/callback",

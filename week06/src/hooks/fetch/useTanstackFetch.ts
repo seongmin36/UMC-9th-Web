@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useGetLocalStorage } from "./useGetLocalStorage";
+import { useGetLocalStorage } from "../common/useGetLocalStorage";
 
 interface CacheEntry<T> {
   data: T;
@@ -76,7 +76,6 @@ export const useTanstackFetch = <T>(
           console.error("요청 취소", url);
           return;
         }
-
         // 재시도 횟수가 최대 횟수를 초과하지 않았다면 재시도
         if (currentRetry < MAX_RETRIES) {
           // 지수 백오프 재시도 딜레이 계산

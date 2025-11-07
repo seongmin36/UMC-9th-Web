@@ -1,6 +1,8 @@
 import { useCallback } from "react";
 
 export const useGetLocalStorage = <T>(key: string) => {
+  console.log("useGetLocalStorage 호출됨", key); // 이게 여러 번 찍히는지 확인
+
   const setToken = useCallback(
     (values: T) => {
       try {
@@ -18,7 +20,7 @@ export const useGetLocalStorage = <T>(key: string) => {
   const getToken = useCallback((): T | null => {
     try {
       const value = localStorage.getItem(key);
-      console.log(value);
+      console.log("getToken 함수 실행됨", key); // 실제 함수 실행
       return value ? (JSON.parse(value) as T) : null;
     } catch (e) {
       console.error(e);

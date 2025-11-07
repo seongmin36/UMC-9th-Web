@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 import type { RequestLoginDto } from "../types/auth";
-import { useGetLocalStorage } from "../hooks/useGetLocalStorage";
+import { useGetLocalStorage } from "../hooks/common/useGetLocalStorage";
 import { LOCAL_STORAGE_KEY } from "../constants/key";
 import { postLogin, postLogout, postRefresh } from "../apis/auth";
 

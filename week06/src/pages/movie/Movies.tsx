@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import MoviePagination from "../../components/movie/MoviePagination";
 import Pending from "../../components/common/Pending";
 import { Toaster } from "react-hot-toast";
-import useCustomFetch from "../../hooks/useCustomFetch";
+import useCustomFetch from "../../hooks/fetch/useCustomFetch";
 import Error from "../../components/common/Error";
 
 const Movies = () => {

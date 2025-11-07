@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTanstackFetch } from "../hooks/useTanstackFetch";
+import { useTanstackFetch } from "../hooks/fetch/useTanstackFetch";
 
 interface WelcomeData {
   id: number;

@@ -1,5 +1,5 @@
 import { IoIosArrowBack } from "react-icons/io";
-import { useBack } from "../hooks/useBack";
+import { useBack } from "../hooks/common/useBack";
 import SignupStep from "../components/SignupStep";
 import { Toaster } from "react-hot-toast";
 

@@ -3,6 +3,8 @@ import MovieNavbar from "../components/common/MovieNavbar";
 import { useAuth } from "../hooks/auth/useAuth";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
+import Sidebar from "../components/common/Sidebar";
+import { useSidebar } from "../hooks/common/sidebar/useSidebar";
 
 interface BaseLayoutProps {
   protectedRoutes: boolean;
@@ -11,6 +13,7 @@ interface BaseLayoutProps {
 const BaseLayout = ({ protectedRoutes }: BaseLayoutProps) => {
   const location = useLocation();
   const { accessToken } = useAuth();
+  const { isOpen, sidebarRef, triggerRef, close, toggle } = useSidebar();
 
   useEffect(() => {
     if (protectedRoutes && !accessToken) {
@@ -26,7 +29,16 @@ const BaseLayout = ({ protectedRoutes }: BaseLayoutProps) => {
 
   return (
     <>
-      <MovieNavbar />
+      <MovieNavbar
+        isOpen={isOpen}
+        triggerRef={triggerRef as React.RefObject<HTMLButtonElement>}
+        onToggle={toggle}
+      />
+      <Sidebar
+        isOpen={isOpen}
+        sidebarRef={sidebarRef as React.RefObject<HTMLDivElement>}
+        onClose={close}
+      />
       <Outlet />
     </>
   );

@@ -1,5 +1,11 @@
+import HomeList from "../components/home/HomeList";
+
 const HomePage = () => {
-  return <div>홈페이지 입니다!</div>;
+  return (
+    <>
+      <HomeList />
+    </>
+  );
 };
 
 export default HomePage;
