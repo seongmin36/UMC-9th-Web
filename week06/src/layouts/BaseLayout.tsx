@@ -29,17 +29,22 @@ const BaseLayout = ({ protectedRoutes }: BaseLayoutProps) => {
 
   return (
     <>
-      <MovieNavbar
-        isOpen={isOpen}
-        triggerRef={triggerRef as React.RefObject<HTMLButtonElement>}
-        onToggle={toggle}
-      />
       <Sidebar
         isOpen={isOpen}
         sidebarRef={sidebarRef as React.RefObject<HTMLDivElement>}
         onClose={close}
       />
-      <Outlet />
+      <MovieNavbar
+        triggerRef={triggerRef as React.RefObject<HTMLButtonElement>}
+        onToggle={toggle}
+      />
+      <div
+        className={`flex-1 transition-all duration-300 ease-in-out ${
+          isOpen ? "ml-44" : "ml-0"
+        }`}
+      >
+        <Outlet />
+      </div>
     </>
   );
 };

@@ -20,7 +20,7 @@ function App() {
       )}
       <AuthProvider>
         <Toaster position="top-center" reverseOrder={false} />
-        <RouterProvider router={router} />;
+        <RouterProvider router={router} />
       </AuthProvider>
     </QueryClientProvider>
   );

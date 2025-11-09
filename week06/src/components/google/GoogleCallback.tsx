@@ -15,7 +15,7 @@ const GoogleLoginRedirect = () => {
     if (accessToken) {
       // AuthContext와 localStorage 업데이트
       setToken(accessToken, refreshToken || undefined);
-      navigate("/mypage");
+      navigate("/mypage", { replace: true });
     }
   }, [setToken, navigate]);
 

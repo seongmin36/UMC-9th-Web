@@ -18,7 +18,11 @@ const Movies = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <Toaster position="top-center" reverseOrder={false} />
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        toastOptions={{ duration: 3000 }}
+      />
       {isLoading ? (
         <Pending />
       ) : error ? (

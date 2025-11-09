@@ -1,5 +1,5 @@
 import type { Order } from "../types/common/enum";
-import type { ResponseLpListDto } from "../types/lp";
+import type { ResponseLpDetailDto, ResponseLpListDto } from "../types/lp";
 import { axiosInstance } from "./axios";
 
 interface GetLpListParams {
@@ -16,14 +16,31 @@ export const getLpList = async ({
   search,
   order,
 }: GetLpListParams) => {
-  const { data } = await axiosInstance.get<ResponseLpListDto>(`/v1/lps`, {
-    params: {
-      cursor,
-      limit,
-      search,
-      order,
-    },
-  });
+  try {
+    const { data } = await axiosInstance.get<ResponseLpListDto>(`/v1/lps`, {
+      params: {
+        cursor,
+        limit,
+        search,
+        order,
+      },
+    });
+    return { data };
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
 
-  return data;
+// LP 상세 조회
+export const getLpDetail = async (lpId: number) => {
+  try {
+    const { data } = await axiosInstance.get<ResponseLpDetailDto>(
+      `/v1/lps/${lpId}`
+    );
+    return data;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
 };

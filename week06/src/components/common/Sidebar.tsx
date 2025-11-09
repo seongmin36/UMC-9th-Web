@@ -11,7 +11,7 @@ export default function Sidebar({ isOpen, sidebarRef, onClose }: SidebarProps) {
   const navigate = useNavigate();
 
   const handleNavigate = (path: string) => {
-    navigate(path);
+    navigate(path, { replace: true });
     onClose();
   };
 
@@ -27,12 +27,11 @@ export default function Sidebar({ isOpen, sidebarRef, onClose }: SidebarProps) {
   return (
     <aside
       ref={sidebarRef}
-      className={`fixed top-[77px] left-0 h-full w-64 z-20 bg-white border-r shadow-md
+      className={`fixed top-[77px] left-0 h-full w-44 z-20 bg-white border-r border-gray-300 shadow-2xl
         transform transition-transform duration-300 ease-in-out
         ${isOpen ? "translate-x-0" : "-translate-x-full"}
       `}
     >
-      <div className="p-4 font-bold text-lg border-b">Menu</div>
       <nav className="flex flex-col p-4 space-y-2 text-gray-700">
         <button
           onClick={() => handleNavigate("/search")}

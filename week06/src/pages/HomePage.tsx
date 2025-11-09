@@ -1,9 +1,9 @@
-import HomeList from "../components/home/HomeList";
+import LpList from "../components/lp/LpList";
 
 const HomePage = () => {
   return (
     <>
-      <HomeList />
+      <LpList />
     </>
   );
 };

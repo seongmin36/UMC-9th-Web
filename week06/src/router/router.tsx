@@ -9,6 +9,7 @@ import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import MyPage from "../pages/MyPage";
 import GoogleLoginRedirect from "../components/google/GoogleCallback";
+import LpDetailPage from "../pages/lp/LpDetailPage";
 
 const publicLayout: RouteObject[] = [
   {
@@ -43,6 +44,10 @@ const publicLayout: RouteObject[] = [
       {
         path: "v1/auth/google/callback",
         element: <GoogleLoginRedirect />,
+      },
+      {
+        path: "lp/:lpId",
+        element: <LpDetailPage />,
       },
     ],
   },

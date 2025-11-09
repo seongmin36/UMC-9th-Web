@@ -12,15 +12,13 @@ const navItems: Record<string, NavItem> = {
 };
 
 interface NavbarProps {
-  isOpen: boolean;
   triggerRef: React.RefObject<HTMLButtonElement>;
   onToggle: () => void;
 }
 
-const MovieNavbar = ({ isOpen, triggerRef, onToggle }: NavbarProps) => {
-  console.log(isOpen);
+const MovieNavbar = ({ triggerRef, onToggle }: NavbarProps) => {
   return (
-    <div className="border-b border-gray-300">
+    <div className="sticky top-0 z-20 bg-white border-b border-gray-300">
       <ul className="relative flex gap-4 px-8 py-6 font-sm text-xl">
         {/* 햄버거 버튼 클릭 시 사이드바 열림 
         data-hamburger 속성을 활용하여 사이드바 열림 방지 */}

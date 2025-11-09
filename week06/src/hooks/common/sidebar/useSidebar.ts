@@ -21,9 +21,6 @@ export function useSidebar() {
     close
   );
 
-  // 사이드바 햄버거 버튼 클릭 시 사이드바 열림 방지
-  useOnClickOutside([triggerRef as React.RefObject<HTMLButtonElement>], close);
-
   useResponsiveSidebar(isOpen, close, open, 768);
 
   return { isOpen, sidebarRef, triggerRef, open, close, toggle };
