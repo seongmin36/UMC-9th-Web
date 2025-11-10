@@ -33,7 +33,7 @@ const LpReview = ({
   } = useGetLpReview(lpId, cursor, limit, order);
 
   const { ref: trackingRef, inView } = useInView({
-    rootMargin: "0px 0px 200px 0px",
+    threshold: 0.5,
   });
 
   useEffect(() => {

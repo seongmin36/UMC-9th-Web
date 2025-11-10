@@ -106,8 +106,8 @@ const LpDetail = ({ lpId }: LpDetailProps) => {
           </button>
           <span className="text-sm text-gray-200">{likeCount}</span>
         </div>
+        <LpReview lpId={lpId} initialOrder={Order.desc} />
       </div>
-      <LpReview lpId={lpId} initialOrder={Order.desc} />
     </div>
   );
 };
