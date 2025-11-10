@@ -1,5 +1,5 @@
 import type { Order } from "../types/common/enum";
-import type { ResponseLpDetailDto, ResponseLpListDto } from "../types/lp";
+import type { ResponseLpDetailDto, ResponseLpListDto } from "../types/lps/lp";
 import { axiosInstance } from "./axios";
 
 interface GetLpListParams {

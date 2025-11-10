@@ -18,13 +18,14 @@ export const useGetLocalStorage = <T>(key: string) => {
   );
 
   const getToken = useCallback((): T | null => {
+    const value = localStorage.getItem(key);
+    console.log("getToken 함수 실행됨", key); // 실제 함수 실행
+    if (value === null) return null;
+
     try {
-      const value = localStorage.getItem(key);
-      console.log("getToken 함수 실행됨", key); // 실제 함수 실행
-      return value ? (JSON.parse(value) as T) : null;
-    } catch (e) {
-      console.error(e);
-      return null;
+      return JSON.parse(value) as T;
+    } catch {
+      return value as unknown as T;
     }
   }, [key]);
 

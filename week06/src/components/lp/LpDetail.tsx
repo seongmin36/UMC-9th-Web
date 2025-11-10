@@ -1,9 +1,13 @@
+import { useEffect } from "react";
 import { useGetLpDetail } from "../../hooks/lps/useGetLpDetail";
 import { useGetUser } from "../../hooks/user/useGetUser";
+import { Order } from "../../types/common/enum";
 import timeAgo from "../../utils/timeFormat";
 import { HeartIcon } from "../icons/Heart";
 import { Pencil } from "../icons/Pencil";
 import { Trash } from "../icons/Trash";
+import LpReview from "./review/LpReview";
+import { LOCAL_STORAGE_KEY } from "../../constants/key";
 
 interface LpDetailProps {
   lpId: number;
@@ -12,6 +16,11 @@ interface LpDetailProps {
 const LpDetail = ({ lpId }: LpDetailProps) => {
   const { data: lp } = useGetLpDetail(lpId);
   const { data: user } = useGetUser();
+
+  useEffect(() => {
+    const currentPath = window.location.pathname + window.location.search;
+    localStorage.setItem(LOCAL_STORAGE_KEY.redirectPath, currentPath);
+  }, []);
 
   const isLiked = lp?.likes.some((like) => like.userId === user?.id);
   const likeCount = lp?.likes.length ?? 0;
@@ -70,7 +79,7 @@ const LpDetail = ({ lpId }: LpDetailProps) => {
         )}
         {/* 태그 */}
         {Array.isArray(lp?.tags) && lp!.tags?.length > 0 && (
-          <div className="flex flex-wrap justify-center gap-2 mb-10">
+          <div className="flex flex-wrap justify-center gap-2">
             {lp!.tags?.map((tag) => (
               <span
                 key={tag.id}
@@ -82,7 +91,7 @@ const LpDetail = ({ lpId }: LpDetailProps) => {
           </div>
         )}
         {/* 좋아요 */}
-        <div className="flex items-center justify-center gap-2">
+        <div className="flex items-center justify-center gap-2 mb-10">
           <button className="flex items-center justify-center">
             <HeartIcon
               width={28}
@@ -98,6 +107,7 @@ const LpDetail = ({ lpId }: LpDetailProps) => {
           <span className="text-sm text-gray-200">{likeCount}</span>
         </div>
       </div>
+      <LpReview lpId={lpId} initialOrder={Order.desc} />
     </div>
   );
 };

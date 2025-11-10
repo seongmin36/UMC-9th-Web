@@ -1,4 +1,4 @@
-import type { CommonResponse } from "./common/common";
+import type { CommonResponse } from "../common/common";
 
 // LP
 export type Lp = {

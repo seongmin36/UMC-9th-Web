@@ -25,8 +25,7 @@ const LpList = ({ order }: { order: Order }) => {
   });
 
   // 데이터 리스트가 있는지 확인
-  const dataList = data?.pages?.flatMap((page) => page.data.data ?? []);
-  const hasData = Boolean(dataList && dataList.length > 0);
+  const hasData = Boolean(data && data.length > 0);
   // 초기 스켈레톤 표시 여부 결정
   const showInitialSkeleton = isPending || (!hasData && isFetching);
 
@@ -45,7 +44,7 @@ const LpList = ({ order }: { order: Order }) => {
           ? Array.from({ length: 10 }).map((_, index) => (
               <LpCardSkeleton key={index} />
             ))
-          : dataList?.map((item) => <LpCard key={item.id} data={item} />)}
+          : data?.map((item) => <LpCard key={item.id} data={item} />)}
         {/* 다음 페이지 스켈레톤 표시 */}
         {isFetchingNextPage &&
           Array.from({ length: 10 }).map((_, index) => (

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import type { Lp } from "../../types/lp";
+import type { Lp } from "../../types/lps/lp";
 import timeAgo from "../../utils/timeFormat";
 import { HeartIcon } from "../icons/Heart";
 

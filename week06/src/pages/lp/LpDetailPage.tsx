@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import Error from "../../components/common/Error";
 import LpDetail from "../../components/lp/LpDetail";
@@ -12,10 +12,18 @@ const LpDetailPage = () => {
     return Number.isNaN(parsed) ? null : parsed;
   }, [lpId]);
 
+  // 콜백 처리
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const callback = params.get("callback");
+    if (callback) {
+      console.log(callback);
+    }
+  }, [parsedLpId]);
+
   if (!parsedLpId) {
     return <Error error="유효하지 않은 LP ID 입니다." />;
   }
-
   return <LpDetail lpId={parsedLpId} />;
 };
 

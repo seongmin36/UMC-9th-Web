@@ -45,10 +45,6 @@ const publicLayout: RouteObject[] = [
         path: "v1/auth/google/callback",
         element: <GoogleLoginRedirect />,
       },
-      {
-        path: "lp/:lpId",
-        element: <LpDetailPage />,
-      },
     ],
   },
 ];
@@ -60,6 +56,10 @@ const protectedRoutes: RouteObject[] = [
       {
         path: "mypage",
         element: <MyPage />,
+      },
+      {
+        path: "lp/:lpId",
+        element: <LpDetailPage />,
       },
     ],
   },

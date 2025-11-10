@@ -1,0 +1,28 @@
+import type { Order } from "../types/common/enum";
+import type { ResponseReviewListDto } from "../types/lps/review";
+import { axiosInstance } from "./axios";
+
+// 리뷰 리스트 조회
+export const getReviewList = async (
+  lpId: number,
+  cursor: number,
+  limit: number,
+  order: Order
+) => {
+  try {
+    const { data } = await axiosInstance.get<ResponseReviewListDto>(
+      `/v1/lps/${lpId}/comments`,
+      {
+        params: {
+          cursor,
+          limit,
+          order,
+        },
+      }
+    );
+    return data;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
