@@ -25,7 +25,7 @@ export const getLpList = async ({
         order,
       },
     });
-    return { data };
+    return data;
   } catch (e) {
     console.error(e);
     throw e;

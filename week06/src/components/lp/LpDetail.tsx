@@ -1,8 +1,6 @@
 import { useGetLpDetail } from "../../hooks/lps/useGetLpDetail";
 import { useGetUser } from "../../hooks/user/useGetUser";
 import timeAgo from "../../utils/timeFormat";
-import Error from "../common/Error";
-import Loading from "../common/Loading";
 import { HeartIcon } from "../icons/Heart";
 import { Pencil } from "../icons/Pencil";
 import { Trash } from "../icons/Trash";
@@ -12,14 +10,11 @@ interface LpDetailProps {
 }
 
 const LpDetail = ({ lpId }: LpDetailProps) => {
-  const { data: lp, isPending, isError } = useGetLpDetail(lpId);
+  const { data: lp } = useGetLpDetail(lpId);
   const { data: user } = useGetUser();
 
   const isLiked = lp?.likes.some((like) => like.userId === user?.id);
   const likeCount = lp?.likes.length ?? 0;
-
-  if (isPending) return <Loading />;
-  if (isError) return <Error error="데이터를 불러오는데 실패했습니다" />;
 
   return (
     <div className="min-h-screen text-white bg-black p-8">

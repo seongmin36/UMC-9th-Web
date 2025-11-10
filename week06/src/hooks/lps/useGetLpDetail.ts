@@ -11,6 +11,7 @@ export const useGetLpDetail = (lpId: number) => {
     gcTime: 1000 * 60 * 10, // 10분
     retry: 3,
     retryDelay: 1000,
+    experimental_prefetchInRender: true,
   });
   return { data: data?.data, isPending, isError };
 };
