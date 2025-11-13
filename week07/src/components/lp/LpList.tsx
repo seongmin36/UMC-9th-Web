@@ -1,7 +1,7 @@
 import LpCard from "./LpCard";
 import { LpCardSkeleton } from "./skeleton/LpCardSkeleton";
 import { Order } from "../../types/common/enum";
-import { useGetLpList } from "../../hooks/lps/useGetLpList";
+import useGetLpList from "../../hooks/lps/query/useGetLpList";
 import { useOnInView } from "react-intersection-observer";
 import Error from "../common/Error";
 
@@ -51,12 +51,6 @@ const LpList = ({ order }: { order: Order }) => {
             <LpCardSkeleton key={index} />
           ))}
       </div>
-      {/* <button
-        onClick={() => alert("test")}
-        className="absolute bottom-0 right-20 z-50 bg-blue-500 text-white rounded-full w-12 h-12 flex items-center justify-center"
-      >
-        +
-      </button> */}
       <div ref={trackingRef} className="h-4 w-full" />
     </>
   );

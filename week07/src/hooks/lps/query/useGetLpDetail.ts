@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import type { ResponseLpDetailDto } from "../../types/lps/lp";
-import { getLpDetail } from "../../apis/lps";
+import type { ResponseLpDetailDto } from "../../../types/lps/lp";
+import { getLpDetail } from "../../../apis/lps";
 
-export const useGetLpDetail = (lpId: number) => {
+export default function useGetLpDetail(lpId: number) {
   const { data, isPending, isError } = useQuery<ResponseLpDetailDto>({
     queryKey: ["lp", lpId],
     queryFn: () => getLpDetail(lpId),
@@ -14,4 +14,4 @@ export const useGetLpDetail = (lpId: number) => {
     experimental_prefetchInRender: true,
   });
   return { data: data?.data, isPending, isError };
-};
+}

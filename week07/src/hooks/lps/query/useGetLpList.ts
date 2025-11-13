@@ -1,14 +1,14 @@
-import { Order } from "../../types/common/enum";
-import { getLpList } from "../../apis/lps";
-import { QUERY_KEY } from "../../constants/key";
+import { Order } from "../../../types/common/enum";
+import { getLpList } from "../../../apis/lps";
+import { QUERY_KEY } from "../../../constants/key";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 // LP 리스트 조회
-export const useGetLpList = (
+export default function useGetLpList(
   order: Order,
   limit: number = 20,
   cursor: number = 0
-) => {
+) {
   return useInfiniteQuery({
     queryKey: [QUERY_KEY.lps, order],
     queryFn: ({ pageParam = cursor }) =>
@@ -22,4 +22,4 @@ export const useGetLpList = (
     retry: 3,
     retryDelay: 1000,
   });
-};
+}

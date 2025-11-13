@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { XIcon } from "../icons/XIcon";
 import useLockBodyScroll from "../../hooks/common/sidebar/useLockBodyScroll";
 import { useOnClickOutside } from "../../hooks/common/sidebar/useOnClickOutside";
+import useCreateLp from "../../hooks/lps/mutation/useCreateLp";
+import { uploadImage } from "../../apis/img";
 
 interface LpModalProps {
   onClose?: () => void;
@@ -14,49 +16,81 @@ export function LpModal({ onClose }: LpModalProps) {
   const [lpContent, setLpContent] = useState<string>("");
   const [lpTag, setLpTag] = useState<string[]>([]);
   const [lpTagInput, setLpTagInput] = useState<string>("");
-  const [image, setImage] = useState<File | null>(null);
+  const [image, setImage] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<string>("");
 
   // 모달 영역 밖 클릭 시 닫기
   useLockBodyScroll();
+
   // 모달 영역 밖 클릭 시 닫기
   useOnClickOutside([ModalRef as React.RefObject<HTMLElement>], () => {
     if (onClose) {
       onClose();
     }
   });
+  const createLp = useCreateLp();
 
-  useEffect(() => {
-    console.log(lpName, lpContent, lpTag);
-  }, [lpName, lpContent, lpTag]);
-
-  const handleAddLp = () => {
-    console.log(lpName, lpContent, lpTag);
-  };
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // 이미지 변경 시 이미지 미리보기
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      setImage(file);
-    }
+
+    if (!file) return;
+
+    const fileUrl = URL.createObjectURL(file);
+    // 미리보기용
+    setImage(fileUrl);
+
+    // 서버 전송용
+    const uploadUrl = await uploadImage(file);
+    setImageFile(uploadUrl);
   };
 
-  const handleAddLpTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!lpTagInput.trim()) return;
-    if (e.key !== "Enter") return;
+  // 이미지 미리보기 해제 -> 메모리 누수 방지
+  useEffect(() => {
+    return () => {
+      if (image) {
+        URL.revokeObjectURL(image);
+      }
+    };
+  }, [image]);
 
-    setLpTag([...lpTag, lpTagInput]);
-    setLpTagInput("");
+  // LP 생성 버튼 (Add LP)
+  const handleCreateLp = () => {
+    createLp.mutate({
+      title: lpName,
+      content: lpContent,
+      tags: lpTag,
+      thumbnail: imageFile,
+      published: false,
+    });
+
+    onClose?.(); // 모달 닫기
   };
 
-  const handleAddLpTagButton = () => {
+  // LP 태그 입력 시 엔터키 누르면 추가
+  const handleAddLpTag = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key !== "Enter") return;
+      if (!lpTagInput.trim()) return;
+
+      setLpTag((prev) => [...prev, lpTagInput.trim()]);
+      setLpTagInput("");
+    },
+    [lpTagInput]
+  );
+
+  // LP 태그 추가 버튼 (Add)
+  const handleAddLpTagButton = useCallback(() => {
     if (lpTagInput.trim() === "") return;
 
-    setLpTag([...lpTag, lpTagInput]);
+    setLpTag((prev) => [...prev, lpTagInput]);
     setLpTagInput("");
-  };
+  }, [lpTagInput]);
 
-  const handleRemoveLpTag = (tag: string) => {
-    setLpTag(lpTag.filter((t) => t !== tag));
-  };
+  // LP 태그 삭제 (X)
+  const handleRemoveLpTag = useCallback((tag: string) => {
+    setLpTag((prev) => prev.filter((t) => t !== tag));
+  }, []);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
@@ -88,7 +122,7 @@ export function LpModal({ onClose }: LpModalProps) {
             {image && (
               <div className="w-55 h-55 object-cover overflow-hidden -mr-18 z-5">
                 <img
-                  src={URL.createObjectURL(image)}
+                  src={image}
                   alt="LP"
                   className="w-full h-full object-cover"
                 />
@@ -139,7 +173,7 @@ export function LpModal({ onClose }: LpModalProps) {
               className="h-11 flex-1 rounded-md border border-white/30 bg-[#25272C] px-3 text-sm text-gray-100 placeholder:text-gray-400 focus:border-white/50 focus:outline-none"
               value={lpTagInput}
               onChange={(e) => setLpTagInput(e.target.value)}
-              onKeyDown={handleAddLpTag}
+              onKeyUp={handleAddLpTag}
             />
             <button
               type="button"
@@ -172,7 +206,7 @@ export function LpModal({ onClose }: LpModalProps) {
         {/* 하단 Add LP 버튼 */}
         <button
           type="button"
-          onClick={handleAddLp}
+          onClick={handleCreateLp}
           className="mt-7 h-11 w-full rounded-md bg-blue-500 disabled:bg-[#989FAA] disabled:cursor-not-allowed text-sm font-semibold hover:bg-blue-600 transition-colors"
           disabled={!lpName.trim() || !lpContent.trim()}
         >

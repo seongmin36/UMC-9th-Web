@@ -1,14 +1,14 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { getReviewList } from "../../apis/lps.review";
-import { QUERY_KEY } from "../../constants/key";
-import type { Order } from "../../types/common/enum";
+import { getReviewList } from "../../../apis/lps.review";
+import { QUERY_KEY } from "../../../constants/key";
+import type { Order } from "../../../types/common/enum";
 
-export const useGetLpReview = (
+export default function useGetLpReview(
   lpId: number,
   cursor: number,
   limit: number,
   order: Order
-) => {
+) {
   return useInfiniteQuery({
     queryKey: [QUERY_KEY.lpReview, lpId, cursor, limit, order],
     queryFn: ({ pageParam = cursor }) =>
@@ -22,4 +22,4 @@ export const useGetLpReview = (
     retryDelay: 1000,
     enabled: !!lpId,
   });
-};
+}

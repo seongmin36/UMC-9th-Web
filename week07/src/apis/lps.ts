@@ -1,5 +1,10 @@
 import type { Order } from "../types/common/enum";
-import type { ResponseLpDetailDto, ResponseLpListDto } from "../types/lps/lp";
+import type {
+  RequestCreateLpDto,
+  ResponseCreateLpDto,
+  ResponseLpDetailDto,
+  ResponseLpListDto,
+} from "../types/lps/lp";
 import { axiosInstance } from "./axios";
 
 interface GetLpListParams {
@@ -37,6 +42,22 @@ export const getLpDetail = async (lpId: number) => {
   try {
     const { data } = await axiosInstance.get<ResponseLpDetailDto>(
       `/v1/lps/${lpId}`
+    );
+    return data;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
+
+// LP 생성
+export const createLp = async (
+  body: RequestCreateLpDto
+): Promise<ResponseCreateLpDto> => {
+  try {
+    const { data } = await axiosInstance.post<ResponseCreateLpDto>(
+      `/v1/lps`,
+      body
     );
     return data;
   } catch (e) {

@@ -10,11 +10,8 @@ export type Lp = {
   authorId: number;
   createdAt: string;
   updatedAt: string;
-  tags: {
-    id: number;
-    name: string;
-  };
-  likes: Like[];
+  tags?: Tag[];
+  likes?: Like[];
   author?: Author;
 };
 
@@ -54,3 +51,15 @@ export type ResponseLpListDto = CommonResponse<LpData>;
 
 // LP 상세 응답 타입
 export type ResponseLpDetailDto = CommonResponse<Lp>;
+
+// LP 생성 요청 타입
+export type RequestCreateLpDto = {
+  title: string;
+  content: string;
+  thumbnail: string;
+  tags: string[];
+  published: boolean;
+};
+
+// LP 생성 응답 타입
+export type ResponseCreateLpDto = CommonResponse<Lp>;

@@ -4,15 +4,26 @@ import { Order } from "../types/common/enum";
 import { OrderToggle } from "../components/common/toggle/OrderToggle";
 import { LpModal } from "../components/lp/LpModal";
 import ModalPortal from "../components/common/ModalPortal";
+import { useAuth } from "../hooks/auth/useAuth";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const [order, setOrder] = useState<Order>(Order.desc);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { accessToken } = useAuth();
+  const navigate = useNavigate();
 
+  // 모달 열기
   const handleOpenModal = () => {
+    if (!accessToken) {
+      toast.error("로그인이 필요한 서비스입니다!", { duration: 2000 });
+      navigate("/login", { replace: true });
+    }
     setIsOpen(true);
   };
 
+  // 모달 닫기
   const handleCloseModal = () => {
     setIsOpen(false);
   };

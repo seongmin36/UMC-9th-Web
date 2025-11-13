@@ -34,7 +34,7 @@ export const LpCard = ({ data }: { data: Lp }) => {
                 height={18}
                 className="translate-y-0.5"
               />
-              <p className="text-sm">{data.likes.length ?? 0}</p>
+              <p className="text-sm">{data.likes?.length ?? 0}</p>
             </div>
           </div>
         </div>

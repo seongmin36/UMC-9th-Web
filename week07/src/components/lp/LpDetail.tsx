@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useGetLpDetail } from "../../hooks/lps/useGetLpDetail";
+import useGetLpDetail from "../../hooks/lps/query/useGetLpDetail";
 import { useGetUser } from "../../hooks/user/useGetUser";
 import { Order } from "../../types/common/enum";
 import timeAgo from "../../utils/timeFormat";
@@ -22,8 +22,8 @@ const LpDetail = ({ lpId }: LpDetailProps) => {
     localStorage.setItem(LOCAL_STORAGE_KEY.redirectPath, currentPath);
   }, []);
 
-  const isLiked = lp?.likes.some((like) => like.userId === user?.id);
-  const likeCount = lp?.likes.length ?? 0;
+  const isLiked = lp?.likes?.some((like) => like.userId === user?.id);
+  const likeCount = lp?.likes?.length ?? 0;
 
   return (
     <div className="min-h-screen text-white bg-black p-8">
@@ -80,7 +80,7 @@ const LpDetail = ({ lpId }: LpDetailProps) => {
         {/* 태그 */}
         {Array.isArray(lp?.tags) && lp!.tags?.length > 0 && (
           <div className="flex flex-wrap justify-center gap-2">
-            {lp!.tags?.map((tag) => (
+            {lp?.tags?.map((tag) => (
               <span
                 key={tag.id}
                 className="px-3 py-1 rounded-full bg-[#111827] border border-[#1298c5]/40 text-[11px] text-[#1298c5]"

@@ -1,7 +1,11 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
 // import { type AxiosResponse } from "axios";
 import { LOCAL_STORAGE_KEY } from "../constants/key";
-import { useGetLocalStorage } from "../hooks/common/useGetLocalStorage";
+import {
+  getLocalStorageItem,
+  setLocalStorageItem,
+  removeLocalStorageItem,
+} from "../utils/localStorage";
 import { postRefresh } from "./auth";
 // import toast from "react-hot-toast";
 
@@ -65,15 +69,8 @@ axiosInstance.interceptors.response.use(
       !originalRequest._retry
     ) {
       if (originalRequest.url !== "/v1/auth/refresh") {
-        const { removeToken: removeAccessToken } = useGetLocalStorage(
-          LOCAL_STORAGE_KEY.accessToken
-        );
-
-        const { removeToken: removeRefreshToken } = useGetLocalStorage(
-          LOCAL_STORAGE_KEY.refreshToken
-        );
-        removeAccessToken();
-        removeRefreshToken();
+        removeLocalStorageItem(LOCAL_STORAGE_KEY.accessToken);
+        removeLocalStorageItem(LOCAL_STORAGE_KEY.refreshToken);
         window.location.href = "/login";
         return Promise.reject(error);
       }
@@ -83,34 +80,23 @@ axiosInstance.interceptors.response.use(
       // 이미 refresh 요청이 진행중이면 그 Promise를 재사용
       if (!refreshPromise) {
         refreshPromise = (async () => {
-          const { getToken: getRefreshToken } = useGetLocalStorage(
+          const refreshToken = getLocalStorageItem<string>(
             LOCAL_STORAGE_KEY.refreshToken
           );
-          const refreshToken = getRefreshToken();
 
           const { data } = await postRefresh(refreshToken as string);
-          const { setToken: setAccessToken } = useGetLocalStorage(
-            LOCAL_STORAGE_KEY.accessToken
+          setLocalStorageItem(LOCAL_STORAGE_KEY.accessToken, data.accessToken);
+          setLocalStorageItem(
+            LOCAL_STORAGE_KEY.refreshToken,
+            data.refreshToken
           );
-          const { setToken: setRefreshToken } = useGetLocalStorage(
-            LOCAL_STORAGE_KEY.refreshToken
-          );
-          setAccessToken(data.accessToken);
-          setRefreshToken(data.refreshToken);
 
           return data.accessToken;
         })()
           .catch((error) => {
             console.error(error);
-            const { removeToken: removeAccessToken } = useGetLocalStorage(
-              LOCAL_STORAGE_KEY.accessToken
-            );
-            const { removeToken: removeRefreshToken } = useGetLocalStorage(
-              LOCAL_STORAGE_KEY.accessToken
-            );
-
-            removeAccessToken();
-            removeRefreshToken();
+            removeLocalStorageItem(LOCAL_STORAGE_KEY.accessToken);
+            removeLocalStorageItem(LOCAL_STORAGE_KEY.refreshToken);
 
             return null;
           })

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import Error from "../../common/Error";
 import { Order } from "../../../types/common/enum";
-import { useGetLpReview } from "../../../hooks/lps/useGetLpReview";
+import useGetLpReview from "../../../hooks/lps/query/useGetLpReview";
 import LpReviewList from "./LpReviewList";
 import { OrderToggle } from "../../common/toggle/OrderToggle";
 
