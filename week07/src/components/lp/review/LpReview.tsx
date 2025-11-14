@@ -37,10 +37,19 @@ const LpReview = ({
 
   // 리뷰 작성
   const handleReviewSubmit = useCallback(() => {
+    if (!reviewContent.trim()) return;
+    if (isReviewing) return;
+
     setIsReviewing(true);
-    postReview.mutate({ content: reviewContent });
-    setReviewContent("");
-  }, [postReview, reviewContent, setIsReviewing, setReviewContent]);
+    postReview.mutate(
+      { content: reviewContent.trim() },
+      {
+        onSettled: () => {
+          setIsReviewing(false);
+        },
+      }
+    );
+  }, [postReview, reviewContent, isReviewing]);
 
   // 리뷰 내용 엔터키 누르면 작성
   const handleReviewContentKeyUp = useCallback(
@@ -54,20 +63,12 @@ const LpReview = ({
     [handleReviewSubmit]
   );
 
-  // 리뷰 작성 완료
+  // 리뷰 작성 성공 시 리뷰 내용 초기화
   useEffect(() => {
     if (postReview.isSuccess) {
-      setIsReviewing(false);
       setReviewContent("");
     }
   }, [postReview.isSuccess]);
-
-  // 리뷰 작성 실패
-  useEffect(() => {
-    if (postReview.isError) {
-      setIsReviewing(false);
-    }
-  }, [postReview.isError]);
 
   // 리뷰 리스트 조회
   const {
@@ -125,7 +126,7 @@ const LpReview = ({
         />
         <button
           onClick={handleReviewSubmit}
-          disabled={!reviewContent.trim()}
+          disabled={!reviewContent.trim() || isReviewing}
           className={clsx(
             "flex items-center justify-center h-10 w-20 rounded-md border border-neutral-700 text-neutral-100 transition-colors",
             "cursor-pointer bg-neutral-500 hover:bg-neutral-400",
