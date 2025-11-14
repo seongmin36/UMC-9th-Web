@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { XIcon } from "../icons/XIcon";
 import useLockBodyScroll from "../../hooks/common/sidebar/useLockBodyScroll";
 import { useOnClickOutside } from "../../hooks/common/sidebar/useOnClickOutside";
-import useCreateLp from "../../hooks/lps/mutation/useCreateLp";
+import usePostLp from "../../hooks/lps/mutation/usePostLp";
 import { uploadImage } from "../../apis/img";
 
 interface LpModalProps {
@@ -28,7 +28,7 @@ export function LpModal({ onClose }: LpModalProps) {
       onClose();
     }
   });
-  const createLp = useCreateLp();
+  const createLp = usePostLp();
 
   // 이미지 변경 시 이미지 미리보기
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {

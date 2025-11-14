@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { ResponseLpDetailDto } from "../../../types/lps/lp";
 import { getLpDetail } from "../../../apis/lps";
 
+// LP 상세 조회
 export default function useGetLpDetail(lpId: number) {
   const { data, isPending, isError } = useQuery<ResponseLpDetailDto>({
     queryKey: ["lp", lpId],

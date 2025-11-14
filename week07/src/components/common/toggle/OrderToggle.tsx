@@ -21,7 +21,7 @@ export const OrderToggle = ({ order, onChangeOrder }: OrderToggleProps) => {
           className={`rounded-md px-2 py-1 transition-colors ${
             order === value
               ? "bg-neutral-800 text-neutral-100"
-              : "text-neutral-500 hover:text-neutral-700"
+              : "text-neutral-500 hover:text-neutral-400"
           }`}
         >
           {label}

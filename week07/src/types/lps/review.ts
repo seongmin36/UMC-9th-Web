@@ -21,3 +21,6 @@ export type ReviewData = {
 
 // 리뷰 리스트 응답 타입
 export type ResponseReviewListDto = CommonResponse<ReviewData>;
+
+// 리뷰 작성 응답 타입
+export type ResponseCreateReviewDto = CommonResponse<Review>;

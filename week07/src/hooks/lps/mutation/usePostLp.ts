@@ -9,7 +9,8 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 
-export default function useCreateLp() {
+// LP 생성
+export default function usePostLp() {
   const qc = useQueryClient();
   const navigate = useNavigate();
 

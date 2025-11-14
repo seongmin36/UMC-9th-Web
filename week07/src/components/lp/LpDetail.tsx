@@ -79,19 +79,19 @@ const LpDetail = ({ lpId }: LpDetailProps) => {
         )}
         {/* 태그 */}
         {Array.isArray(lp?.tags) && lp!.tags?.length > 0 && (
-          <div className="flex flex-wrap justify-center gap-2">
+          <div className="flex flex-wrap justify-center gap-2 mb-5">
             {lp?.tags?.map((tag) => (
               <span
                 key={tag.id}
                 className="px-3 py-1 rounded-full bg-[#111827] border border-[#1298c5]/40 text-[11px] text-[#1298c5]"
               >
-                #{tag.name}
+                # {tag.name}
               </span>
             ))}
           </div>
         )}
         {/* 좋아요 */}
-        <div className="flex items-center justify-center gap-2 mb-10">
+        <div className="flex items-center justify-center gap-1 mb-10">
           <button className="flex items-center justify-center">
             <HeartIcon
               width={28}
@@ -99,7 +99,7 @@ const LpDetail = ({ lpId }: LpDetailProps) => {
               className={
                 isLiked
                   ? "text-[#ff4b6b]"
-                  : "text-[#1298c5] hover:text-[#ff4b6b] transition-colors translate-y-px"
+                  : "text-[#1298c5] hover:text-[#ff4b6b] transition-colors translate-y-0.5"
               }
               fill={isLiked ? "#ff4b6b" : "white"}
             />

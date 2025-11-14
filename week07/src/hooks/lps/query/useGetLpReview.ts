@@ -3,6 +3,7 @@ import { getReviewList } from "../../../apis/lps.review";
 import { QUERY_KEY } from "../../../constants/key";
 import type { Order } from "../../../types/common/enum";
 
+// 리뷰 리스트 조회
 export default function useGetLpReview(
   lpId: number,
   cursor: number,
