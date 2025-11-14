@@ -24,3 +24,9 @@ export type ResponseReviewListDto = CommonResponse<ReviewData>;
 
 // 리뷰 작성 응답 타입
 export type ResponseCreateReviewDto = CommonResponse<Review>;
+
+// 리뷰 수정 응답 타입
+export type ResponsePatchReviewDto = CommonResponse<Review>;
+
+// 리뷰 삭제 응답 타입
+export type ResponseDeleteReviewDto = CommonResponse<{ message: string }>;
