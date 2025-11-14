@@ -30,3 +30,14 @@ export const patchUser = async (
     throw e;
   }
 };
+
+// 유저 탈퇴
+export const deleteUser = async () => {
+  try {
+    const { data } = await axiosInstance.delete(`v1/users`);
+    return data;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};

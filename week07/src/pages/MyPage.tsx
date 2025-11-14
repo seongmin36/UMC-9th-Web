@@ -58,7 +58,7 @@ const MyPage = () => {
     }
   };
   return (
-    <div className="flex flex-col items-center justify-start bg-neutral-900 rounded-lg p-4 min-h-screen">
+    <div className="flex flex-col items-center justify-start bg-neutral-900 p-4 min-h-screen">
       <div className="relative max-w-80 w-full flex flex-col items-center justify-center bg-neutral-800 rounded-lg py-10">
         <button
           onClick={handleSetting}
