@@ -17,7 +17,7 @@ const BaseLayout = ({ protectedRoutes }: BaseLayoutProps) => {
 
   useEffect(() => {
     if (protectedRoutes && !accessToken) {
-      toast.error("로그인이 필요한 서비스입니다!");
+      toast.error("로그인이 필요한 서비스입니다!", { id: "auth-guard" });
     }
   }, [protectedRoutes, accessToken]);
 

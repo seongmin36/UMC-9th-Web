@@ -54,16 +54,19 @@ const MyPage = () => {
   }, [user]);
 
   // 유저 정보 수정
-  const handleUserInputChange = () => {
+  const handleUserInputChange = async () => {
     if (confirm("정보를 수정하시겠습니까?")) {
-      patchUser.mutate({
+      await patchUser.mutateAsync({
         name: userName,
         bio: userBio,
         avatar: userAvatar,
       });
       setIsSetting(false);
     } else {
-      toast.error("정보 수정이 취소되었습니다!", { duration: 2000 });
+      toast.error("정보 수정이 취소되었습니다!", {
+        duration: 2000,
+        id: "mypage-update",
+      });
     }
   };
   return (
@@ -90,7 +93,7 @@ const MyPage = () => {
             >
               <img
                 className="w-full h-full rounded-full object-cover"
-                src={userAvatar}
+                src={userAvatar || "/src/assets/user.svg"}
                 alt="avatar"
               />
             </div>
@@ -119,7 +122,7 @@ const MyPage = () => {
           <>
             <img
               className="w-24 h-24 rounded-full mb-4 object-cover"
-              src={user?.avatar || "/src/assets/user.png"}
+              src={user?.avatar || "/src/assets/user.svg"}
               alt="avatar"
             />
             <div className="flex flex-col items-start justify-center gap-2">

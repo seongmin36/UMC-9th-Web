@@ -32,11 +32,15 @@ const SignupStep = () => {
     data: UserSignupInformation
   ) => {
     try {
-      const res = await toast.promise(postSignup(data), {
-        loading: "회원가입 중...",
-        success: "회원가입 성공!",
-        error: "회원가입 실패!",
-      });
+      const res = await toast.promise(
+        postSignup(data),
+        {
+          loading: "회원가입 중...",
+          success: "회원가입 성공!",
+          error: "회원가입 실패!",
+        },
+        { id: "signup" }
+      );
       console.log("회원가입 성공", res);
       setTimeout(() => navigate("/login"), 2000);
     } catch (e) {

@@ -15,14 +15,18 @@ export default function usePostReiview(lpId: number) {
     mutationFn: (body) => postReview(lpId, body),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: [QUERY_KEY.lpReview, lpId] });
-      toast.success("리뷰 작성 성공!");
+      toast.success("리뷰 작성 성공!", { id: "lp-review-create" });
       navigate(`/lp/${lpId}`);
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data?.message ?? "리뷰 작성 실패!");
+        toast.error(error.response?.data?.message ?? "리뷰 작성 실패!", {
+          id: "lp-review-create",
+        });
       } else {
-        toast.error(error.message ?? "리뷰 작성 실패!");
+        toast.error(error.message ?? "리뷰 작성 실패!", {
+          id: "lp-review-create",
+        });
       }
     },
   });

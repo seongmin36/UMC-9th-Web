@@ -14,7 +14,7 @@ const Login = () => {
     handleSubmit,
     formState: { isValid, errors },
   } = useLoginForm();
-  const { handleLogin } = useLoginSubmit();
+  const { handleLogin, isPending } = useLoginSubmit();
 
   // 로그인 상태 확인 리다이렉트
   useAuthRedirect();
@@ -66,10 +66,10 @@ const Login = () => {
           )}
           <button
             type="submit"
-            disabled={!isValid}
+            disabled={!isValid || isPending}
             className="text-white bg-[#50bcdf] rounded-lg px-4 py-3 cursor-pointer hover:bg-[#1298c5] transition-colors disabled:bg-gray-300"
           >
-            로그인
+            {isPending ? "로그인 중..." : "로그인"}
           </button>
         </div>
       </div>

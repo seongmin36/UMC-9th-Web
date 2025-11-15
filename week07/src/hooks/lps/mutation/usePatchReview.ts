@@ -22,16 +22,19 @@ export function usePatchReview(lpId: number, commentId: number) {
     mutationFn: (body) => patchReview(lpId, commentId, body),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: [QUERY_KEY.lpReview, lpId] });
-      toast.success("리뷰가 수정되었습니다!");
+      toast.success("리뷰가 수정되었습니다!", { id: "lp-review-update" });
       navigate(`/lp/${lpId}`);
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
         toast.error(
-          error.response?.data?.message ?? "리뷰 수정에 실패했습니다!"
+          error.response?.data?.message ?? "리뷰 수정에 실패했습니다!",
+          { id: "lp-review-update" }
         );
       } else {
-        toast.error(error.message ?? "리뷰 수정에 실패했습니다!");
+        toast.error(error.message ?? "리뷰 수정에 실패했습니다!", {
+          id: "lp-review-update",
+        });
       }
     },
   });
@@ -46,16 +49,19 @@ export function useDeleteReview(lpId: number, commentId: number) {
     mutationFn: () => deleteReview(lpId, commentId),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: [QUERY_KEY.lpReview, lpId] });
-      toast.success("리뷰가 삭제되었습니다!");
+      toast.success("리뷰가 삭제되었습니다!", { id: "lp-review-delete" });
       navigate(`/lp/${lpId}`);
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
         toast.error(
-          error.response?.data?.message ?? "리뷰 삭제에 실패했습니다!"
+          error.response?.data?.message ?? "리뷰 삭제에 실패했습니다!",
+          { id: "lp-review-delete" }
         );
       } else {
-        toast.error(error.message ?? "리뷰 삭제에 실패했습니다!");
+        toast.error(error.message ?? "리뷰 삭제에 실패했습니다!", {
+          id: "lp-review-delete",
+        });
       }
     },
   });

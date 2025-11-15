@@ -29,11 +29,15 @@ export default function Sidebar({ isOpen, sidebarRef, onClose }: SidebarProps) {
   const deleteUser = useDeleteUser();
   const handleDeleteUser = () => {
     if (confirm("정말 탈퇴하시겠습니까?")) {
-      toast.promise(async () => await deleteUser.mutate(), {
-        loading: "탈퇴 중...",
-        success: "탈퇴 성공!",
-        error: "탈퇴 실패!",
-      });
+      toast.promise(
+        async () => await deleteUser.mutate(),
+        {
+          loading: "탈퇴 중...",
+          success: "탈퇴 성공!",
+          error: "탈퇴 실패!",
+        },
+        { id: "user-delete" }
+      );
     }
   };
 

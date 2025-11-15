@@ -31,6 +31,7 @@ const MovieDetail = () => {
         // 에러 메시지 시간 지나면 사라지기
         toast.error(`데이터를 불러오는데 실패했습니다!\n${e}`, {
           duration: 2_000,
+          id: "movie-detail-fetch",
         });
       } finally {
         setIsLoading(false);

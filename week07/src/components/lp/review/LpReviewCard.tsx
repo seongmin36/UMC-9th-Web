@@ -30,7 +30,9 @@ const LpReviewCard = ({ review }: ReviewCardProps) => {
   // 수정 시작 (본인의 리뷰만 수정할 수 있도록 체크)
   const handleStartEdit = useCallback(() => {
     if (review.author.id !== user?.id) {
-      toast.error("본인의 리뷰만 수정할 수 있습니다.");
+      toast.error("본인의 리뷰만 수정할 수 있습니다.", {
+        id: "lp-review-permission",
+      });
       return;
     }
 

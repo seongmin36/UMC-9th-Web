@@ -17,7 +17,10 @@ const HomePage = () => {
   // 모달 열기
   const handleOpenModal = () => {
     if (!accessToken) {
-      toast.error("로그인이 필요한 서비스입니다!", { duration: 2000 });
+      toast.error("로그인이 필요한 서비스입니다!", {
+        duration: 2000,
+        id: "auth-required",
+      });
       navigate("/login", { replace: true });
     }
     setIsOpen(true);
@@ -32,7 +35,7 @@ const HomePage = () => {
     <>
       <div className="relative flex flex-col items-end justify-start ">
         {/* 정렬 버튼 */}
-        <div className="absolute top-12 gap-1 flex right-30">
+        <div className="absolute top-12 gap-1 z-10 flex right-30">
           <OrderToggle order={order} onChangeOrder={setOrder} />
         </div>
         {/* LP 리스트 */}

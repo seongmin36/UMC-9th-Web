@@ -18,15 +18,18 @@ export default function usePostLp() {
     mutationFn: (body) => createLp(body),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: [QUERY_KEY.lps] });
-      toast.success("LP 생성 성공!", { duration: 2000 });
+      toast.success("LP 생성 성공!", { duration: 2000, id: "lp-create" });
       navigate("/");
     },
     onError: (error) => {
       console.error(error);
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message, { duration: 3000 });
+        toast.error(error.response?.data.message, {
+          duration: 3000,
+          id: "lp-create",
+        });
       } else {
-        toast.error(error.message, { duration: 3000 });
+        toast.error(error.message, { duration: 3000, id: "lp-create" });
       }
       navigate("/");
     },

@@ -31,7 +31,9 @@ export default function useCustomFetch(
       } catch (e) {
         console.error(e);
         setError("영화 데이터를 불러오는데 실패했습니다!");
-        toast.error(`데이터를 불러오는데 실패했습니다!\n${e}`);
+        toast.error(`데이터를 불러오는데 실패했습니다!\n${e}`, {
+          id: "movies-fetch",
+        });
       } finally {
         setIsLoading(false);
       }

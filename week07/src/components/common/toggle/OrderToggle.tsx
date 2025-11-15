@@ -18,7 +18,7 @@ export const OrderToggle = ({ order, onChangeOrder }: OrderToggleProps) => {
           key={value}
           type="button"
           onClick={() => onChangeOrder(value as Order)}
-          className={`rounded-md px-2 py-1 transition-colors ${
+          className={`rounded-md px-2 py-1 transition-colors cursor-pointer ${
             order === value
               ? "bg-neutral-800 text-neutral-100"
               : "text-neutral-500 hover:text-neutral-400"

@@ -11,13 +11,14 @@ export const useDeleteUser = () => {
   return useMutation({
     mutationFn: deleteUser,
     onSuccess: () => {
-      toast.success("정상적으로 탈퇴되었습니다.");
+      toast.success("정상적으로 탈퇴되었습니다.", { id: "user-delete" });
       navigate("/");
       qc.invalidateQueries({ queryKey: [QUERY_KEY.users] });
     },
     onError: (e) => {
       toast.error("탈퇴 처리 중 오류가 발생했습니다.", {
         duration: 2000,
+        id: "user-delete",
       });
       console.error(e);
     },
