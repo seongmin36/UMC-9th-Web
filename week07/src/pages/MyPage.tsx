@@ -8,9 +8,9 @@ import toast from "react-hot-toast";
 
 const MyPage = () => {
   const { data: user } = useGetUser();
-  const [userName, setUserName] = useState<string>(user?.name ?? "");
-  const [userBio, setUserBio] = useState<string>(user?.bio ?? "");
-  const [userAvatar, setUserAvatar] = useState<string>(user?.avatar ?? "");
+  const [userName, setUserName] = useState<string>("");
+  const [userBio, setUserBio] = useState<string>("");
+  const [userAvatar, setUserAvatar] = useState<string>("");
   const [isSetting, setIsSetting] = useState(false);
   const patchUser = usePatchUser();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -38,19 +38,28 @@ const MyPage = () => {
   useEffect(() => {
     console.log(userAvatar);
     return () => {
-      if (userAvatar) {
+      if (userAvatar && userAvatar !== user?.avatar) {
         URL.revokeObjectURL(userAvatar);
       }
     };
-  }, [userAvatar]);
+  }, [userAvatar, user?.avatar]);
+
+  // 유저 정보 자동 설정
+  useEffect(() => {
+    if (user) {
+      setUserName(user.name);
+      setUserBio(user.bio ?? "");
+      setUserAvatar(user.avatar ?? "");
+    }
+  }, [user]);
 
   // 유저 정보 수정
   const handleUserInputChange = () => {
     if (confirm("정보를 수정하시겠습니까?")) {
       patchUser.mutate({
-        name: userName ?? "",
-        bio: userBio ?? "",
-        avatar: userAvatar ?? "",
+        name: userName,
+        bio: userBio,
+        avatar: userAvatar,
       });
       setIsSetting(false);
     } else {
@@ -81,7 +90,7 @@ const MyPage = () => {
             >
               <img
                 className="w-full h-full rounded-full object-cover"
-                src={user?.avatar || "/src/assets/user.svg"}
+                src={userAvatar}
                 alt="avatar"
               />
             </div>
@@ -90,7 +99,7 @@ const MyPage = () => {
                 <input
                   type="text"
                   className="w-full p-2 rounded-md border border-neutral-600 text-neutral-100 bg-neutral-800"
-                  value={user?.name ?? ""}
+                  value={userName}
                   onChange={(e) => setUserName(e.target.value)}
                 />
                 <button onClick={() => handleUserInputChange()}>
@@ -99,7 +108,7 @@ const MyPage = () => {
               </div>
               <input
                 type="text"
-                value={user?.bio ?? ""}
+                value={userBio}
                 className="w-full p-2 rounded-md border border-neutral-600 text-neutral-100 bg-neutral-800"
                 onChange={(e) => setUserBio(e.target.value)}
               />
@@ -109,8 +118,8 @@ const MyPage = () => {
         ) : (
           <>
             <img
-              className="w-24 h-24 rounded-full mb-4"
-              src={user?.avatar || "/src/assets/user.svg"}
+              className="w-24 h-24 rounded-full mb-4 object-cover"
+              src={user?.avatar || "/src/assets/user.png"}
               alt="avatar"
             />
             <div className="flex flex-col items-start justify-center gap-2">
