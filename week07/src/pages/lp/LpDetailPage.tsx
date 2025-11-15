@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import Error from "../../components/common/Error";
-import LpDetail from "../../components/lp/LpDetail";
+import LpDetail from "../../components/lp/detail/LpDetail";
 
 const LpDetailPage = () => {
   const { lpId } = useParams<{ lpId: string }>();

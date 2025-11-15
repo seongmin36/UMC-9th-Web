@@ -16,6 +16,7 @@ export const LpCard = ({ data }: { data: Lp }) => {
           src={data.thumbnail}
           alt={data.title}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          onError={(e) => (e.currentTarget.src = "/src/assets/image.png")}
           width={100}
           height={100}
         />

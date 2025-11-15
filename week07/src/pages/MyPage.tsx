@@ -12,7 +12,7 @@ const MyPage = () => {
   const [userBio, setUserBio] = useState<string>("");
   const [userAvatar, setUserAvatar] = useState<string>("");
   const [isSetting, setIsSetting] = useState(false);
-  const patchUser = usePatchUser();
+  const { mutateAsync: patchUser } = usePatchUser();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // 설정 버튼 클릭 시 설정 모드 토글
@@ -56,12 +56,28 @@ const MyPage = () => {
   // 유저 정보 수정
   const handleUserInputChange = async () => {
     if (confirm("정보를 수정하시겠습니까?")) {
-      await patchUser.mutateAsync({
-        name: userName,
-        bio: userBio,
-        avatar: userAvatar,
-      });
-      setIsSetting(false);
+      await patchUser(
+        {
+          name: userName,
+          bio: userBio,
+          avatar: userAvatar,
+        },
+        {
+          onSuccess: () => {
+            toast.success("정보 수정이 완료되었습니다!", {
+              duration: 2000,
+              id: "mypage-update-success",
+            });
+            setIsSetting(false);
+          },
+          onError: (error) => {
+            toast.error(error.message, {
+              duration: 2000,
+              id: "mypage-update-error",
+            });
+          },
+        }
+      );
     } else {
       toast.error("정보 수정이 취소되었습니다!", {
         duration: 2000,

@@ -1,9 +1,12 @@
 import type { Order } from "../types/common/enum";
 import type {
   RequestCreateLpDto,
+  RequestUpdateLpDto,
   ResponseCreateLpDto,
+  ResponseDeleteLpDto,
   ResponseLpDetailDto,
   ResponseLpListDto,
+  ResponseUpdateLpDto,
 } from "../types/lps/lp";
 import { axiosInstance } from "./axios";
 
@@ -58,6 +61,36 @@ export const createLp = async (
     const { data } = await axiosInstance.post<ResponseCreateLpDto>(
       `/v1/lps`,
       body
+    );
+    return data;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
+
+// LP 수정
+export const updateLp = async (
+  lpId: number,
+  body: RequestUpdateLpDto
+): Promise<ResponseUpdateLpDto> => {
+  try {
+    const { data } = await axiosInstance.patch<ResponseUpdateLpDto>(
+      `/v1/lps/${lpId}`,
+      body
+    );
+    return data;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
+
+// LP 삭제
+export const deleteLp = async (lpId: number) => {
+  try {
+    const { data } = await axiosInstance.delete<ResponseDeleteLpDto>(
+      `/v1/lps/${lpId}`
     );
     return data;
   } catch (e) {

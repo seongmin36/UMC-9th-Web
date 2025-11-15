@@ -63,3 +63,12 @@ export type RequestCreateLpDto = {
 
 // LP 생성 응답 타입
 export type ResponseCreateLpDto = CommonResponse<Lp>;
+
+// LP 수정 요청 타입
+export type RequestUpdateLpDto = RequestCreateLpDto;
+
+// LP 수정 응답 타입
+export type ResponseUpdateLpDto = CommonResponse<Lp>;
+
+// LP 삭제 응답 타입
+export type ResponseDeleteLpDto = CommonResponse<boolean>;

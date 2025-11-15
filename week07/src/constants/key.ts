@@ -9,4 +9,5 @@ export const QUERY_KEY = {
   users: "users",
   lps: "lps",
   lpReview: "lp-review",
+  lpDetail: "lp-detail",
 };
