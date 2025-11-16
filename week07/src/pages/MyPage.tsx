@@ -64,10 +64,6 @@ const MyPage = () => {
         },
         {
           onSuccess: () => {
-            toast.success("정보 수정이 완료되었습니다!", {
-              duration: 2000,
-              id: "mypage-update-success",
-            });
             setIsSetting(false);
           },
           onError: (error) => {

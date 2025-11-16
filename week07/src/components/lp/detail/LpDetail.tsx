@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import useGetLpDetail from "../../../hooks/lps/query/useGetLpDetail";
 import { useGetUser } from "../../../hooks/user/useGetUser";
 import { Order } from "../../../types/common/enum";
-import { HeartIcon } from "../../icons/Heart";
 import LpReview from "../review/LpReview";
 import {
   useDeleteLp,
@@ -12,6 +11,7 @@ import toast from "react-hot-toast";
 import EditSection from "./EditSection";
 import ViewSection from "./ViewSection";
 import Header from "./Header";
+import LpLike from "./LpLIke";
 
 interface LpDetailProps {
   lpId: number;
@@ -110,6 +110,7 @@ const LpDetail = ({ lpId }: LpDetailProps) => {
   return (
     <div className="min-h-screen text-white bg-black p-8">
       <div className="max-w-3xl mx-auto px-6 pt-10 pb-16 rounded-md bg-[#282A31]">
+        {/* 헤더 */}
         <Header
           lp={lp!}
           user={user!}
@@ -120,6 +121,7 @@ const LpDetail = ({ lpId }: LpDetailProps) => {
           handleCancel={() => setIsSetting(false)}
         />
 
+        {/* 수정 섹션 */}
         {isSetting ? (
           <EditSection
             title={title}
@@ -138,22 +140,11 @@ const LpDetail = ({ lpId }: LpDetailProps) => {
         )}
 
         {/* 좋아요 */}
-        <div className="flex items-center justify-center gap-1 mb-10">
-          <button className="flex items-center justify-center">
-            <HeartIcon
-              width={28}
-              height={28}
-              className={
-                isLiked
-                  ? "text-[#ff4b6b]"
-                  : "text-[#1298c5] hover:text-[#ff4b6b] transition-colors translate-y-0.5"
-              }
-              fill={isLiked ? "#ff4b6b" : "white"}
-            />
-          </button>
-          <span className="text-sm text-gray-200">{likeCount}</span>
+        <div className="flex items-center justify-center ml-10 mb-10">
+          <LpLike isLiked={isLiked!} likeCount={likeCount} lpId={lpId} />
         </div>
 
+        {/* 리뷰 */}
         <LpReview lpId={lpId} initialOrder={Order.desc} />
       </div>
     </div>

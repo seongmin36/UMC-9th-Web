@@ -9,6 +9,7 @@ import { deleteLp, updateLp } from "../../../apis/lps";
 import { QUERY_KEY } from "../../../constants/key";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
 
 // LP 수정
 export function usePatchLp(lpId: number) {
@@ -42,6 +43,7 @@ export function usePatchLp(lpId: number) {
 // LP 삭제
 export function useDeleteLp(lpId: number) {
   const qc = useQueryClient();
+  const navigate = useNavigate();
 
   return useMutation<ResponseDeleteLpDto, Error>({
     mutationFn: () => deleteLp(lpId),
@@ -51,6 +53,7 @@ export function useDeleteLp(lpId: number) {
       toast.success("LP 삭제 성공", {
         id: "delete-lp-success",
       });
+      navigate("/");
     },
     onError: (error) => {
       if (error instanceof AxiosError) {

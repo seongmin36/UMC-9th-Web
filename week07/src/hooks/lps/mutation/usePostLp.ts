@@ -16,10 +16,11 @@ export default function usePostLp() {
 
   return useMutation<ResponseCreateLpDto, Error, RequestCreateLpDto>({
     mutationFn: (body) => createLp(body),
-    onSuccess: () => {
+    onSuccess: (data: ResponseCreateLpDto) => {
       qc.invalidateQueries({ queryKey: [QUERY_KEY.lps] });
+      qc.invalidateQueries({ queryKey: [QUERY_KEY.lpDetail] });
       toast.success("LP 생성 성공!", { duration: 2000, id: "lp-create" });
-      navigate("/");
+      navigate(`/lp/${data.data.id}`);
     },
     onError: (error) => {
       console.error(error);

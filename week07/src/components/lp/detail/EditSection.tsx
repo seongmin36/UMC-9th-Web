@@ -53,9 +53,13 @@ export default function EditSection({
       <div className="w-full flex flex-col items-center mb-8">
         <div className="relative bg-[#282A31] rounded-md shadow-2xl shadow-black mb-15">
           <img
-            className="w-80 h-80 border-2 m-2 border-black rounded-full overflow-hidden"
-            src={thumbnail || "/src/assets/image.png"}
+            className="w-80 h-80 border-2 m-2 border-black rounded-full overflow-hidden object-cover"
+            src={thumbnail ? thumbnail : "/src/assets/image.png"}
             alt="thumbnail"
+            onError={(e) => {
+              e.currentTarget.src = "/src/assets/image.png";
+              e.currentTarget.alt = "thumbnail";
+            }}
           />
           <div className="absolute inset-[40%] bg-white border border-black rounded-full" />
         </div>
