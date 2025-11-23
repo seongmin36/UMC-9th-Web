@@ -7,6 +7,7 @@ import Error from "../common/Error";
 import { useSearchStore } from "../../store/useSearchStore";
 import useDebounce from "../../hooks/common/useDebounce";
 import toast from "react-hot-toast";
+import useThrottle from "../../hooks/common/useThrottle";
 
 const LpList = ({ order }: { order: Order }) => {
   // 검색어 상태 관리
@@ -25,11 +26,14 @@ const LpList = ({ order }: { order: Order }) => {
     isPending,
   } = useGetLpList(order, 20, 0, isSearchOpen ? searchQuery : null);
 
+  // 다음 페이지 로드 스로틀링
+  const throttleFetchNextPage = useThrottle(fetchNextPage, 3_000);
+
   // 무한 스크롤 추적
   const trackingRef = useOnInView((inView, entry) => {
     if (inView && hasNextPage && !isFetchingNextPage) {
       console.log("요소가 보여집니다.", entry.target);
-      fetchNextPage();
+      throttleFetchNextPage?.();
     }
   });
 

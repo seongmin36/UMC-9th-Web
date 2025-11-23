@@ -1,14 +1,25 @@
-import { useEffect, useState } from "react";
+import { useCallback, useRef } from "react";
 
-export default function useThrottle<T>(value: T, interval: number) {
-  const [throttledValue, setThrottledValue] = useState<T>();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function useThrottle<T extends (...args: any[]) => any>(
+  fn: T,
+  delay: number
+) {
+  const lastTime = useRef(0);
 
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setThrottledValue(value);
-    }, interval);
-    return () => clearTimeout(handler);
-  }, [value, interval]);
-
-  return throttledValue;
+  return useCallback(
+    (...args: Parameters<T>) => {
+      const now = Date.now();
+      if (now - lastTime.current >= delay) {
+        lastTime.current = now;
+        fn(...args);
+      } else {
+        const remainingTime = delay - (now - lastTime.current);
+        setTimeout(() => {
+          fn(...args);
+        }, remainingTime);
+      }
+    },
+    [delay, fn]
+  );
 }
