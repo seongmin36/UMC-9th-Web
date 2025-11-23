@@ -1,0 +1,38 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { QUERY_KEY } from "../../../constants/key";
+import type {
+  RequestCreateLpDto,
+  ResponseCreateLpDto,
+} from "../../../types/lps/lp";
+import { createLp } from "../../../apis/lps";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { AxiosError } from "axios";
+
+// LP 생성
+export default function usePostLp() {
+  const qc = useQueryClient();
+  const navigate = useNavigate();
+
+  return useMutation<ResponseCreateLpDto, Error, RequestCreateLpDto>({
+    mutationFn: (body) => createLp(body),
+    onSuccess: (data: ResponseCreateLpDto) => {
+      qc.invalidateQueries({ queryKey: [QUERY_KEY.lps] });
+      qc.invalidateQueries({ queryKey: [QUERY_KEY.lpDetail] });
+      toast.success("LP 생성 성공!", { duration: 2000, id: "lp-create" });
+      navigate(`/lp/${data.data.id}`);
+    },
+    onError: (error) => {
+      console.error(error);
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message, {
+          duration: 3000,
+          id: "lp-create",
+        });
+      } else {
+        toast.error(error.message, { duration: 3000, id: "lp-create" });
+      }
+      navigate("/");
+    },
+  });
+}
