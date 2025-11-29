@@ -2,6 +2,13 @@ import { NavLink } from "react-router-dom";
 import type { NavItem } from "../../types/movie";
 import AuthButton from "../AuthButton";
 import { Hamburger } from "../../components/icons/Hamburger";
+import { CiShoppingCart } from "react-icons/ci";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../hooks/lps/redux/useCustomRedux";
+import { useEffect } from "react";
+import { calculateTotals } from "../../slices/cartSlice";
 
 const navItems: Record<string, NavItem> = {
   home: { label: "홈", path: "/" },
@@ -17,6 +24,13 @@ interface NavbarProps {
 }
 
 const MovieNavbar = ({ triggerRef, onToggle }: NavbarProps) => {
+  const { amount: cartAmount, items } = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(calculateTotals());
+  }, [dispatch, items]);
+
   return (
     <div className="sticky top-0 z-20 bg-white border-b border-gray-300">
       <ul className="relative flex gap-4 px-8 py-6 font-sm text-xl">
@@ -43,6 +57,11 @@ const MovieNavbar = ({ triggerRef, onToggle }: NavbarProps) => {
           </li>
         ))}
         <div className="flex absolute right-10 top-5 gap-2 justify-center items-center">
+          {/* 장바구니 페이지로 이동 */}
+          <NavLink to="/cart" className="cursor-pointer">
+            <CiShoppingCart className="text-2xl text-blue-500 w-8 h-8" />
+          </NavLink>
+          <span className="text-sm text-gray-500">{cartAmount}</span>
           {/* 로그인 인증시 바뀌는 냅바 버튼 */}
           <AuthButton />
         </div>

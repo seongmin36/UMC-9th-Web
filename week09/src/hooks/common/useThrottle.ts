@@ -6,19 +6,27 @@ export default function useThrottle<T extends (...args: any[]) => any>(
   delay: number
 ) {
   const lastTime = useRef(0);
+  const timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   return useCallback(
     (...args: Parameters<T>) => {
       const now = Date.now();
+
       if (now - lastTime.current >= delay) {
         lastTime.current = now;
         fn(...args);
       } else {
         const remainingTime = delay - (now - lastTime.current);
-        setTimeout(() => {
+        timeout.current = setTimeout(() => {
           fn(...args);
         }, remainingTime);
       }
+
+      return () => {
+        if (timeout.current) {
+          clearTimeout(timeout.current);
+        }
+      };
     },
     [delay, fn]
   );
