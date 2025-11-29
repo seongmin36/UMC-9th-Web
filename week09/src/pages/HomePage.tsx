@@ -50,7 +50,7 @@ const HomePage = () => {
       {/* 모달 띄우기 */}
       {isOpen && (
         <ModalPortal>
-          <LpModal onClose={handleCloseModal} />
+          <LpModal onClose={handleCloseModal} isOpen={isOpen} />
         </ModalPortal>
       )}
     </>

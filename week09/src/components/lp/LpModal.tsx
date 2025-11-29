@@ -7,9 +7,10 @@ import { uploadImage } from "../../apis/img";
 
 interface LpModalProps {
   onClose?: () => void;
+  isOpen: boolean;
 }
 
-export function LpModal({ onClose }: LpModalProps) {
+export function LpModal({ onClose, isOpen }: LpModalProps) {
   const ModalRef = useRef<HTMLDivElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [lpName, setLpName] = useState<string>("");
@@ -19,8 +20,8 @@ export function LpModal({ onClose }: LpModalProps) {
   const [image, setImage] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<string>("");
 
-  // 모달 영역 밖 클릭 시 닫기
-  useLockBodyScroll();
+  // 모니터 스크롤 방지
+  useLockBodyScroll(isOpen);
 
   // 모달 영역 밖 클릭 시 닫기
   useOnClickOutside([ModalRef as React.RefObject<HTMLElement>], () => {

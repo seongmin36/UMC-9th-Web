@@ -1,16 +1,21 @@
 import CartItem from "./CartItem";
 import {
-  useAppDispatch,
   useAppSelector,
+  useAppDispatch,
 } from "../../../hooks/lps/redux/useCustomRedux";
-import { clearCart } from "../../../slices/cartSlice";
+import { openModal } from "../../../slices/modalSlice";
+import CartDeleteModal from "./CartDeleteModal";
 
 export default function CartList() {
+  const { isOpen } = useAppSelector((state) => state.modal);
   const { items, total: totalPrice } = useAppSelector((state) => state.cart);
-  const dispatch = useAppDispatch();
+  const modalDispatch = useAppDispatch();
 
   const handleClearCart = () => {
-    dispatch(clearCart());
+    if (!isOpen) {
+      modalDispatch(openModal());
+      console.log("openModal");
+    }
   };
 
   return (
@@ -23,6 +28,7 @@ export default function CartList() {
       <div className="text-2xl font-bold text-end p-4">
         총 결제 금액: {totalPrice}원
       </div>
+      {isOpen && <CartDeleteModal />}
       <div className="flex justify-center p-4">
         <button
           onClick={handleClearCart}
