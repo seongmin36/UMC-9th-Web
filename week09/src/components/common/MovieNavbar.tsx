@@ -3,12 +3,9 @@ import type { NavItem } from "../../types/movie";
 import AuthButton from "../AuthButton";
 import { Hamburger } from "../../components/icons/Hamburger";
 import { CiShoppingCart } from "react-icons/ci";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "../../hooks/lps/redux/useCustomRedux";
+
 import { useEffect } from "react";
-import { calculateTotals } from "../../slices/cartSlice";
+import { useCartActions, useCartInfo } from "../../store/useCartStore";
 
 const navItems: Record<string, NavItem> = {
   home: { label: "홈", path: "/" },
@@ -24,12 +21,13 @@ interface NavbarProps {
 }
 
 const MovieNavbar = ({ triggerRef, onToggle }: NavbarProps) => {
-  const { amount: cartAmount, items } = useAppSelector((state) => state.cart);
-  const dispatch = useAppDispatch();
+  const { items, amount: cartAmount } = useCartInfo();
+  const { calculateTotals } = useCartActions();
 
+  // 카트 정보 계산
   useEffect(() => {
-    dispatch(calculateTotals());
-  }, [dispatch, items]);
+    calculateTotals();
+  }, [calculateTotals, items]);
 
   return (
     <div className="sticky top-0 z-20 bg-white border-b border-gray-300">

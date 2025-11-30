@@ -1,28 +1,24 @@
 import useLockBodyScroll from "../../../hooks/common/sidebar/useLockBodyScroll";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "../../../hooks/lps/redux/useCustomRedux";
-import { clearCart } from "../../../slices/cartSlice";
-import { closeModal } from "../../../slices/modalSlice";
+import { useCartActions } from "../../../store/useCartStore";
+import { useModalActions, useModalInfo } from "../../../store/useModalStore";
 
 const CartDeleteModal = () => {
-  const { isOpen } = useAppSelector((state) => state.modal);
-  const modalDispatch = useAppDispatch();
-  const dispatch = useAppDispatch();
+  const { clearCart } = useCartActions();
+  const { isOpen } = useModalInfo();
+  const { closeModal } = useModalActions();
 
   // 모니터 스크롤 방지
   useLockBodyScroll(isOpen);
 
   // 장바구니 초기화
   const handleClearCart = () => {
-    modalDispatch(closeModal());
-    dispatch(clearCart());
+    closeModal();
+    clearCart();
   };
 
   // 모달 닫기
   const handleCloseModal = () => {
-    modalDispatch(closeModal());
+    closeModal();
   };
 
   if (!isOpen) return null;

@@ -1,20 +1,16 @@
 import CartItem from "./CartItem";
-import {
-  useAppSelector,
-  useAppDispatch,
-} from "../../../hooks/lps/redux/useCustomRedux";
-import { openModal } from "../../../slices/modalSlice";
 import CartDeleteModal from "./CartDeleteModal";
+import { useCartInfo } from "../../../store/useCartStore";
+import { useModalActions, useModalInfo } from "../../../store/useModalStore";
 
 export default function CartList() {
-  const { isOpen } = useAppSelector((state) => state.modal);
-  const { items, total: totalPrice } = useAppSelector((state) => state.cart);
-  const modalDispatch = useAppDispatch();
+  const { items, total } = useCartInfo();
+  const { isOpen } = useModalInfo();
+  const { openModal } = useModalActions();
 
   const handleClearCart = () => {
     if (!isOpen) {
-      modalDispatch(openModal());
-      console.log("openModal");
+      openModal("cart");
     }
   };
 
@@ -26,7 +22,7 @@ export default function CartList() {
         ))}
       </ul>
       <div className="text-2xl font-bold text-end p-4">
-        총 결제 금액: {totalPrice}원
+        총 결제 금액: {total}원
       </div>
       {isOpen && <CartDeleteModal />}
       <div className="flex justify-center p-4">

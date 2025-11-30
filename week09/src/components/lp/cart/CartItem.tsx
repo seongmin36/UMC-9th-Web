@@ -1,5 +1,4 @@
-import { useAppDispatch } from "../../../hooks/lps/redux/useCustomRedux";
-import { decrease, increase, remove } from "../../../slices/cartSlice";
+import { useCartActions } from "../../../store/useCartStore";
 import type { CartItem } from "../../../types/lps/cart";
 
 interface CartItemProps {
@@ -7,18 +6,18 @@ interface CartItemProps {
 }
 
 export default function CartItem({ item }: CartItemProps) {
-  const dispatch = useAppDispatch();
+  const { increase, decrease, remove } = useCartActions();
 
   const handleIncrease = () => {
-    dispatch(increase({ id: item.id }));
+    increase(item.id);
   };
 
   const handleDecrease = () => {
     if (item.amount === 1) {
-      dispatch(remove({ id: item.id }));
+      remove(item.id);
       return;
     }
-    dispatch(decrease({ id: item.id }));
+    decrease(item.id);
   };
 
   return (
