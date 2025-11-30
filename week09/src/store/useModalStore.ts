@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { useShallow } from "zustand/react/shallow";
 
-type ModalType = "search" | "cart" | null;
+type ModalType = "lp-search" | "cart" | null;
 
 interface ModalActions {
   openModal: (type: ModalType) => void;

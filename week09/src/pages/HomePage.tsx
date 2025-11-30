@@ -7,10 +7,12 @@ import { useAuth } from "../hooks/auth/useAuth";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { OrderToggle } from "../components/common/toggle/OrderToggle";
+import { useModalActions, useModalInfo } from "../store/useModalStore";
 
 const HomePage = () => {
   const [order, setOrder] = useState<Order>(Order.desc);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { isOpen } = useModalInfo();
+  const { openModal, closeModal } = useModalActions();
   const { accessToken } = useAuth();
   const navigate = useNavigate();
 
@@ -23,12 +25,12 @@ const HomePage = () => {
       });
       navigate("/login", { replace: true });
     }
-    setIsOpen(true);
+    openModal("lp-search");
   };
 
   // 모달 닫기
   const handleCloseModal = () => {
-    setIsOpen(false);
+    closeModal();
   };
 
   return (
