@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import useGetLpDetail from "../../../hooks/lps/query/useGetLpDetail";
 import { useGetUser } from "../../../hooks/user/useGetUser";
 import { Order } from "../../../types/common/enum";
@@ -103,8 +103,11 @@ const LpDetail = ({ lpId }: LpDetailProps) => {
     }
   }, [lp]);
 
-  const isLiked = lp?.likes?.some((like) => like.userId === user?.id);
-  const likeCount = lp?.likes?.length ?? 0;
+  const isLiked = useMemo(
+    () => lp?.likes?.some((like) => like.userId === user?.id),
+    [lp?.likes, user?.id]
+  );
+  const likeCount = useMemo(() => lp?.likes?.length ?? 0, [lp?.likes]);
 
   return (
     <div className="min-h-screen text-white bg-black p-8">

@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import LpCard from "./LpCard";
 import { LpCardSkeleton } from "./skeleton/LpCardSkeleton";
 import { Order } from "../../types/common/enum";
@@ -62,9 +62,12 @@ const LpList = ({ order }: { order: Order }) => {
   );
 
   // 데이터 리스트가 있는지 확인
-  const hasData = Boolean(data && data.length > 0);
+  const hasData = useMemo(() => Boolean(data && data.length > 0), [data]);
   // 초기 스켈레톤 표시 여부 결정
-  const showInitialSkeleton = isPending || (!hasData && isFetching);
+  const showInitialSkeleton = useMemo(
+    () => isPending || (!hasData && isFetching),
+    [isPending, hasData, isFetching]
+  );
 
   if (isError) {
     const message =

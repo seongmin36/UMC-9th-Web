@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import type { Review } from "../../../types/lps/review";
 import LpReviewCard from "./LpReviewCard";
 import { LpReviewSkeleton } from "./LpReviewSkeleton";
@@ -13,7 +14,10 @@ const LpReviewList = ({
   showInitialSkeleton,
   isFetchingNextPage,
 }: LpReviewListProps) => {
-  const hasReviews = Boolean(reviews && reviews.length > 0);
+  const hasReviews = useMemo(
+    () => Boolean(reviews && reviews.length > 0),
+    [reviews]
+  );
 
   return (
     <>

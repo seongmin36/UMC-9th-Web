@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import Error from "../../common/Error";
 import { Order } from "../../../types/common/enum";
@@ -94,8 +94,14 @@ const LpReview = ({
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  const hasReviews = Boolean(reviews && reviews.length > 0);
-  const showInitialSkeleton = isPending || (!hasReviews && isFetching);
+  const hasReviews = useMemo(
+    () => Boolean(reviews && reviews.length > 0),
+    [reviews]
+  );
+  const showInitialSkeleton = useMemo(
+    () => isPending || (!hasReviews && isFetching),
+    [isPending, hasReviews, isFetching]
+  );
 
   if (isError) {
     const message =

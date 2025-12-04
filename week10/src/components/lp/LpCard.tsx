@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Lp } from "../../types/lps/lp";
 import timeAgo from "../../utils/timeFormat";
@@ -5,6 +6,10 @@ import { HeartIcon } from "../icons/Heart";
 
 export const LpCard = ({ data }: { data: Lp }) => {
   const navigate = useNavigate();
+
+  // 시간 계산 메모이제이션
+  const formattedTime = useMemo(() => timeAgo(data.createdAt), [data.createdAt]);
+  const likeCount = useMemo(() => data.likes?.length ?? 0, [data.likes]);
 
   return (
     <div
@@ -26,7 +31,7 @@ export const LpCard = ({ data }: { data: Lp }) => {
             {data.title}
           </h3>
           <div className="flex items-center justify-between gap-1">
-            <p className="text-xs">{timeAgo(data.createdAt)}</p>
+            <p className="text-xs">{formattedTime}</p>
             {/* 좋아요 섹션 */}
             <div className="flex items-center justify-center">
               <HeartIcon
@@ -35,7 +40,7 @@ export const LpCard = ({ data }: { data: Lp }) => {
                 height={18}
                 className="translate-y-0.5"
               />
-              <p className="text-sm">{data.likes?.length ?? 0}</p>
+              <p className="text-sm">{likeCount}</p>
             </div>
           </div>
         </div>
