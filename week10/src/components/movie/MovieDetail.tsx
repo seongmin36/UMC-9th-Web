@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import type {
   ResponseMovieCredits,
   ResponseMovieDetail,
@@ -7,6 +7,7 @@ import type {
 import { getMovieCredits, getMovieDetails } from "../../apis/movies";
 import toast from "react-hot-toast";
 import Pending from "../common/Pending";
+import { SearchIcon } from "../icons/Search";
 
 const MovieDetail = () => {
   const { movieId } = useParams();
@@ -43,10 +44,22 @@ const MovieDetail = () => {
   const overview = movie?.overview ?? "";
   const handleClamp = useMemo(() => overview.trim().length < 150, [overview]);
 
-  const handleIsMoreBtn = () => {
+  // 감독 필터링 메모이제이션
+  const directors = useMemo(
+    () => credit?.crew.filter((crew) => crew.job === "Director") ?? [],
+    [credit?.crew]
+  );
+
+  // 출연진 슬라이스 메모이제이션
+  const mainCast = useMemo(
+    () => credit?.cast.slice(0, 15) ?? [],
+    [credit?.cast]
+  );
+
+  const handleIsMoreBtn = useCallback(() => {
     if (handleClamp) return;
     setIsMore((prev) => !prev);
-  };
+  }, [handleClamp]);
 
   return (
     <div className="bg-[#1B1B1B] text-white">
@@ -147,38 +160,43 @@ const MovieDetail = () => {
                       </span>
                     </>
                   )}
+                  <Link
+                    to={`https://www.themoviedb.org/movie/${movie?.id}`}
+                    className="flex items-center gap-2 text-sm text-gray-300 border border-white/15 rounded-md px-4 py-2 w-40 mt-5"
+                  >
+                    <SearchIcon color="white" width={16} height={16} />
+                    TMDB에서 검색
+                  </Link>
                 </div>
               </div>
               {/* credit 정보 */}
               <span className="text-4xl font-medium">감독/출연</span>
               <div className="grid grid-cols-8 gap-4 mt-5">
                 {/* 감독 */}
-                {credit?.crew
-                  .filter((crew) => crew.job === "Director")
-                  .map((director) => (
-                    <div
-                      key={director.id}
-                      className="text-center text-gray-300 w-25"
-                    >
-                      {director.profile_path ? (
-                        <img
-                          src={`${tmdbBaseUrl}${director.profile_path}`}
-                          alt=""
-                          className="w-full border rounded-md border-white/80"
-                        />
-                      ) : (
-                        <div className="flex items-center justify-center text-xs bg-gray-400 border rounded-md w-25 h-37 border-white/80">
-                          이미지가 없습니다
-                        </div>
-                      )}
-                      <p className="text-white" key={director.credit_id}>
-                        {director.name}
-                      </p>
-                      <p className="text-[10px]">{director.job}</p>
-                    </div>
-                  ))}
+                {directors.map((director) => (
+                  <div
+                    key={director.id}
+                    className="text-center text-gray-300 w-25"
+                  >
+                    {director.profile_path ? (
+                      <img
+                        src={`${tmdbBaseUrl}${director.profile_path}`}
+                        alt=""
+                        className="w-full border rounded-md border-white/80"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center text-xs bg-gray-400 border rounded-md w-25 h-37 border-white/80">
+                        이미지가 없습니다
+                      </div>
+                    )}
+                    <p className="text-white" key={director.credit_id}>
+                      {director.name}
+                    </p>
+                    <p className="text-[10px]">{director.job}</p>
+                  </div>
+                ))}
                 {/* 출연진 */}
-                {credit?.cast.slice(0, 15).map((cast) => (
+                {mainCast.map((cast) => (
                   <div key={cast.id} className="text-center text-gray-300 w-25">
                     <img
                       src={`${tmdbBaseUrl}${cast.profile_path}`}

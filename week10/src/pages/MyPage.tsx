@@ -68,7 +68,6 @@ const MyPage = () => {
 
   // 이미지 미리보기 해제 -> 메모리 누수 방지
   useEffect(() => {
-    console.log(userInput.avatar);
     return () => {
       if (userInput.avatar && userInput.avatar !== user?.avatar) {
         URL.revokeObjectURL(userInput.avatar);

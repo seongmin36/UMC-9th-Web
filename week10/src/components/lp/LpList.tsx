@@ -31,9 +31,8 @@ const LpList = ({ order }: { order: Order }) => {
   const throttleFetchNextPage = useThrottle(fetchNextPage, 3_000);
 
   // 무한 스크롤 추적
-  const trackingRef = useOnInView((inView, entry) => {
+  const trackingRef = useOnInView((inView) => {
     if (inView && hasNextPage && !isFetchingNextPage) {
-      console.log("요소가 보여집니다.", entry.target);
       throttleFetchNextPage?.();
     }
   });

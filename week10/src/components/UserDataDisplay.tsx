@@ -20,8 +20,6 @@ export const WelcomeData = () => {
     setUserId(999999);
   };
 
-  console.log("welcomeData 실행");
-
   return (
     <div style={{ padding: "20px" }}>
       <div

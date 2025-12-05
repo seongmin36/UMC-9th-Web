@@ -11,4 +11,6 @@ export const QUERY_KEY = {
   lpReview: "lp-review",
   lpDetail: "lp-detail",
   lpLikes: "lp-likes",
+  movies: "movies",
+  movieSearch: "movie-search",
 };

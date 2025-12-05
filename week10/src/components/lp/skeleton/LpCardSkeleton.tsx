@@ -1,5 +1,4 @@
 export const LpCardSkeleton = () => {
-  console.log("LpCardSkeleton 실행됨");
   return (
     <div className="relative h-48 w-full rounded-md overflow-hidden animate-pulse bg-gray-300">
       {/* 이미지 영역 */}

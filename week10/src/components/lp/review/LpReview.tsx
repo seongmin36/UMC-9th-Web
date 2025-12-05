@@ -89,7 +89,6 @@ const LpReview = ({
   // 다음 페이지 로드
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
-      console.log("다음 페이지 로드");
       fetchNextPage();
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);

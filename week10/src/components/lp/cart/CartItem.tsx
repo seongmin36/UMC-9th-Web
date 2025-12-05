@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { memo, useCallback } from "react";
 import { useCartActions } from "../../../store/useCartStore";
 import type { CartItem } from "../../../types/lps/cart";
 
@@ -6,7 +6,7 @@ interface CartItemProps {
   item: CartItem;
 }
 
-export default function CartItem({ item }: CartItemProps) {
+function CartItem({ item }: CartItemProps) {
   const { increase, decrease, remove } = useCartActions();
 
   const handleIncrease = useCallback(() => {
@@ -56,3 +56,5 @@ export default function CartItem({ item }: CartItemProps) {
     </li>
   );
 }
+
+export default memo(CartItem);

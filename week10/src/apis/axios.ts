@@ -39,7 +39,6 @@ export const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY.accessToken);
-    console.log("accessToken", accessToken);
 
     // AccessToken이 존재하면 Authorization 헤더에 추가
     if (accessToken) {

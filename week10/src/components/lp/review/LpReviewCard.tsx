@@ -1,5 +1,5 @@
 // components/ReviewCard.tsx
-import { useCallback, useState, type ChangeEvent } from "react";
+import { memo, useCallback, useState, type ChangeEvent } from "react";
 import type { Review } from "../../../types/lps/review";
 import {
   useDeleteReview,
@@ -13,7 +13,7 @@ interface ReviewCardProps {
   review: Review;
 }
 
-const LpReviewCard = ({ review }: ReviewCardProps) => {
+function LpReviewCard({ review }: ReviewCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [editContent, setEditContent] = useState(review.content);
@@ -112,6 +112,6 @@ const LpReviewCard = ({ review }: ReviewCardProps) => {
       </div>
     </li>
   );
-};
+}
 
-export default LpReviewCard;
+export default memo(LpReviewCard);

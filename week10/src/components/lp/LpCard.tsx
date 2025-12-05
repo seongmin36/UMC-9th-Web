@@ -1,20 +1,24 @@
-import { useMemo } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Lp } from "../../types/lps/lp";
 import timeAgo from "../../utils/timeFormat";
 import { HeartIcon } from "../icons/Heart";
 
-export const LpCard = ({ data }: { data: Lp }) => {
+const LpCard = ({ data }: { data: Lp }) => {
   const navigate = useNavigate();
 
   // 시간 계산 메모이제이션
   const formattedTime = useMemo(() => timeAgo(data.createdAt), [data.createdAt]);
   const likeCount = useMemo(() => data.likes?.length ?? 0, [data.likes]);
 
+  const handleClick = useCallback(() => {
+    navigate(`/lp/${data.id}`);
+  }, [navigate, data.id]);
+
   return (
     <div
       className="hover:scale-120 group hover:z-10 relative cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-lg"
-      onClick={() => navigate(`/lp/${data.id}`)}
+      onClick={handleClick}
     >
       <div className="relative h-48 w-full">
         <img
@@ -49,4 +53,4 @@ export const LpCard = ({ data }: { data: Lp }) => {
   );
 };
 
-export default LpCard;
+export default memo(LpCard);

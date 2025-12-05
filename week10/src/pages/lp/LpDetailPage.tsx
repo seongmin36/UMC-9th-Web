@@ -17,7 +17,7 @@ const LpDetailPage = () => {
     const params = new URLSearchParams(window.location.search);
     const callback = params.get("callback");
     if (callback) {
-      console.log(callback);
+      // 콜백 처리 로직
     }
   }, [parsedLpId]);
 

@@ -1,3 +1,4 @@
+import { memo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Movie } from "../../types/movie";
 
@@ -8,13 +9,13 @@ interface MovieProps {
 const MovieItem = ({ movie }: MovieProps) => {
   const tmdbBaseUrl = import.meta.env.VITE_TMDB_IMAGE_BASE_URL;
   const navigate = useNavigate();
-  console.log(movie);
+
+  const handleClick = useCallback(() => {
+    navigate(`/movies/details/${movie.id}`);
+  }, [navigate, movie.id]);
 
   return (
-    <button
-      className="cursor-pointer"
-      onClick={() => navigate(`/movies/details/${movie.id}`)}
-    >
+    <button className="cursor-pointer" onClick={handleClick}>
       <div className="relative w-full">
         <img
           src={`${tmdbBaseUrl}${movie.poster_path}`}
@@ -32,4 +33,4 @@ const MovieItem = ({ movie }: MovieProps) => {
   );
 };
 
-export default MovieItem;
+export default memo(MovieItem);
