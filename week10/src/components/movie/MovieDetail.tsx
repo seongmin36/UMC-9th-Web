@@ -15,7 +15,7 @@ const MovieDetail = () => {
   const [credit, setCredit] = useState<ResponseMovieCredits | null>(null);
   const [isMore, setIsMore] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const tmdbBaseUrl = import.meta.env.VITE_TMDB_IMAGE_BASE_URL; // 예: https://image.tmdb.org/t/p/original
+  const tmdbBaseUrl = import.meta.env.VITE_TMDB_IMAGE_BASE_URL;
 
   useEffect(() => {
     if (!numMovieId) return;
